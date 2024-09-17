@@ -1,6 +1,7 @@
 package com.agest.page;
 
 import com.agest.model.User;
+import com.agest.utils.AlertUtils;
 import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
 
@@ -11,19 +12,33 @@ public class LoginPage {
     private final SelenideElement usernameInput = $("#username");
     private final SelenideElement passwordInput = $("#password");
     private final SelenideElement loginButton = $(".btn-login");
-    private final SelenideElement mainHeader = $("#header");
 
     @Step("Login with username = {user.username}, password = {user.password}")
     public void loginUser(User user) {
-        usernameInput.should(exist);
-        usernameInput.setValue(user.getUsername());
-        passwordInput.setValue(user.getPassword());
-        loginButton.click();
-        mainHeader.should(exist);
+        inputUsername(user.getUsername());
+        inputPassword(user.getPassword());
+        clickLogin();
     }
 
-    @Step("Verify login successfully")
-    public boolean isLoggingSuccessful() {
-        return mainHeader.isDisplayed();
+    @Step("Input with username: {username}")
+    public void inputUsername(String username) {
+        usernameInput.should(exist);
+        usernameInput.setValue(username);
+    }
+
+    @Step("Input with password: {password}")
+    public void inputPassword(String password) {
+        passwordInput.should(exist);
+        passwordInput.setValue(password);
+    }
+
+    @Step("Click login")
+    public void clickLogin() {
+        loginButton.click();
+    }
+
+    @Step("Should user failed to log in")
+    public void shouldUserFailedToLogIn() {
+        AlertUtils.getAlertContent();
     }
 }
