@@ -1,11 +1,16 @@
 package com.agest.listener;
 
+import com.codeborne.selenide.Selenide;
+import io.qameta.allure.Allure;
 import io.qameta.allure.listener.TestLifecycleListener;
+import org.openqa.selenium.OutputType;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 import io.qameta.allure.model.Status;
 import io.qameta.allure.model.TestResult;
 
+import java.io.ByteArrayInputStream;
+import java.util.UUID;
 
 public class AllureTestListener implements TestLifecycleListener {
     private static final Logger logger = LoggerFactory.getLogger(AllureTestListener.class);
@@ -17,7 +22,7 @@ public class AllureTestListener implements TestLifecycleListener {
             logger.info("Test case \"{}\" has been \"{}\". Take a screenshot", result.getFullName(),
                     result.getStatus().value());
             try {
-                byte[] buf = Selenide.takeScreenShot(OutputType.BYTES);
+                byte[] buf = Selenide.screenshot(OutputType.BYTES);
                 if (buf != null) {
                     ByteArrayInputStream input = new ByteArrayInputStream(buf);
                     Allure.attachment(UUID.randomUUID().toString(), input);

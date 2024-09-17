@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="Selenide Test Suite" thread-count="2" parallel="methods">
+    <test name="Selenide test">
+        <classes>
+            <class name="DashBoardLoginTests">
+                <methods>
+                    <include name="TC001">
+                    </include>
+                    <include name="TC002">
+                    </include>
+                </methods>
+            </class>
+        </classes>
+    </test>
+</suite>

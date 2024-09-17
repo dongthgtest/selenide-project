@@ -1,15 +1,16 @@
 import com.agest.model.User;
 import com.agest.page.DashBoardPage;
 import com.agest.page.LoginPage;
+import com.agest.utils.AlertUtils;
 import com.agest.utils.Constants;
 import com.codeborne.selenide.testng.ScreenShooter;
+import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
 import static com.codeborne.selenide.Selenide.open;
 
-@Listeners({ScreenShooter.class})
 public class DashBoardLoginTests extends TestBase {
     private final LoginPage loginPage = new LoginPage();
     private final DashBoardPage dashBoardPage = new DashBoardPage();
@@ -30,5 +31,7 @@ public class DashBoardLoginTests extends TestBase {
     @Test(description = "Verify that user fails to login specific repository successfully via Dashboard login page with incorrect credentials")
     public void TC002() {
         loginPage.loginUser(invalidUser);
+        String alertInvalidMessage = "Username or password is invalid";
+        Assert.assertEquals(AlertUtils.getAlertContent(), alertInvalidMessage);
     }
 }
