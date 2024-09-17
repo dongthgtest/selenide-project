@@ -36,9 +36,4 @@ public class LoginPage {
     public void clickLogin() {
         loginButton.click();
     }
-
-    @Step("Should user failed to log in")
-    public void shouldUserFailedToLogIn() {
-        AlertUtils.getAlertContent();
-    }
 }
