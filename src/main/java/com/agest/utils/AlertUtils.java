@@ -7,7 +7,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 
 public class AlertUtils {
     public static String getAlertContent() {
-        SelenideWait selenideWait = new SelenideWait(WebDriverRunner.getWebDriver(),5000, 200);
+        SelenideWait selenideWait = new SelenideWait(WebDriverRunner.getWebDriver(), 5000, 200);
         selenideWait.until(ExpectedConditions.alertIsPresent());
         Alert alert = WebDriverRunner.getWebDriver().switchTo().alert();
         return alert.getText();

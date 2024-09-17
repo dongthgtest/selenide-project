@@ -8,7 +8,7 @@
 
         <module name="WhitespaceAfter"/>
         <module name="MethodLength">
-            <property name="max" value="5"/>
+            <property name="max" value="80"/>
         </module>
         <module name="EqualsAvoidNull"/>
     </module>
