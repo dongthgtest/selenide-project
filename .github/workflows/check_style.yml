@@ -1,0 +1,32 @@
+name: Java CI with Maven
+
+on:
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-22.04
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up JDK 11
+      uses: actions/setup-java@v4
+      with:
+        java-version: '11'
+        distribution: 'temurin'
+        cache: maven
+
+    - name: Check style java
+      run: |
+        mvn checkstyle:check
+        mvn site
+
+    - name: Upload check style result
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: Check style result
+        path: ./target/site/checkstyle.html
+        retention-days: 3 
