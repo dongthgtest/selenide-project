@@ -3,11 +3,11 @@ package com.agest.listener;
 import com.codeborne.selenide.Selenide;
 import io.qameta.allure.Allure;
 import io.qameta.allure.listener.TestLifecycleListener;
-import org.openqa.selenium.OutputType;
-import org.slf4j.LoggerFactory;
-import org.slf4j.Logger;
 import io.qameta.allure.model.Status;
 import io.qameta.allure.model.TestResult;
+import org.openqa.selenium.OutputType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.ByteArrayInputStream;
 import java.util.UUID;
