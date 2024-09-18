@@ -7,8 +7,6 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import java.util.List;
-
 import static com.codeborne.selenide.Selenide.open;
 
 public class DaLoginTC002 extends TestBase {
