@@ -18,6 +18,9 @@ jobs:
         distribution: 'temurin'
         cache: maven
 
+    - name: Clean Maven
+      run: mvn clean
+
     - name: Check style java
       run: |
         mvn checkstyle:check
