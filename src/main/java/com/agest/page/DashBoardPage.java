@@ -1,17 +1,20 @@
 package com.agest.page;
 
+import com.agest.model.GlobalSetting;
+import com.agest.model.User;
 import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
-import java.util.List;
 
-import static com.codeborne.selenide.Condition.appear;
-import static com.codeborne.selenide.Condition.visible;
+import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$x;
 
 public class DashBoardPage extends BasePage {
     private final SelenideElement dashBoardContent = $("#ccontent");
     private final SelenideElement logoutButton = $x("//ul[@class='head-menu']//a[text()='Logout']");
+    private final SelenideElement globalSettingButton = $(".mn-setting");
+    private final SelenideElement deletePageButton = $(".delete");
+    private final String dynamicPage = "//li[@class='haschild']/following-sibling::li/a[text()='%s']";
     private final String dynamicUserLink = "//div[@id='header']//a[text()='%s']";
 
 
@@ -22,9 +25,45 @@ public class DashBoardPage extends BasePage {
     }
 
     @Step("Log out")
-    public void logOut(String username) {
-        SelenideElement userLink = $x(String.format(dynamicUserLink, username));
+    public void logOut(User user) {
+        SelenideElement userLink = $x(String.format(dynamicUserLink, user.getUsername()));
         userLink.hover();
         logoutButton.click();
+    }
+
+    @Step("Open {option}")
+    public void selectGlobalSetting(GlobalSetting globalSetting) {
+        String dynamicGlobalSetting = "//a[@class='add' and text()='%s']";
+        SelenideElement settingOption = $x(String.format(dynamicGlobalSetting, globalSetting.getName()));
+        hoverGlobalSetting();
+        settingOption.click();
+    }
+
+    @Step("Hover to global setting")
+    public void hoverGlobalSetting() {
+        hover(globalSettingButton);
+    }
+
+    @Step("Open page")
+    public void openPage(String pageName) {
+        SelenideElement page = $x(String.format(dynamicPage, pageName));
+        page.click();
+    }
+
+    @Step("Page should visible")
+    public void shouldPageVisible(String pageName) {
+        SelenideElement page = $x(String.format(dynamicPage, pageName));
+        page.shouldBe(visible);
+    }
+
+    @Step("Delete page")
+    public void deletePage() {
+        deletePageButton.click();
+    }
+
+    @Step("Page should disappear")
+    public void shouldPageDisappear(String pageName) {
+        SelenideElement page = $x(String.format(dynamicPage, pageName));
+        page.shouldBe(disappear);
     }
 }
