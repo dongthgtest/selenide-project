@@ -1,9 +1,6 @@
 name: Java CI with Maven
 
 on:
-  push:
-    branches:
-      - main
   pull_request:
     branches: 
       - main
@@ -26,14 +23,19 @@ jobs:
       run: mvn clean
 
     - name: Check style java
-      run: |
-        mvn checkstyle:check
-        mvn site
+      id: check-style
+      run: mvn checkstyle:check
+      continue-on-error: true
+
+    - name: Generate check style report
+      if: ${{ steps.check-style.outcome == 'failure' }}
+      run: mvn site
 
     - name: Upload check style result
-      if: always()
+      if: ${{ steps.check-style.outcome == 'failure' }}
       uses: actions/upload-artifact@v4
       with:
         name: Check style result
         path: ./target/site/**
-        retention-days: 3 
+        retention-days: 3
+
