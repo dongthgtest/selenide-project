@@ -1,3 +1,4 @@
+import com.agest.listener.RetryAnalyzer;
 import com.agest.model.User;
 import com.agest.page.LoginPage;
 import com.agest.utils.AlertUtils;
@@ -23,7 +24,8 @@ public class DaLoginTC002 extends TestBase {
         AlertUtils.closeAlert();
     }
 
-    @Test(description = "Verify that user fails to login specific repository successfully via Dashboard login page with incorrect credentials")
+    @Test(description = "Verify that user fails to login specific repository successfully via Dashboard login page with incorrect credentials",
+            retryAnalyzer = RetryAnalyzer.class)
     public void TC002() {
         loginPage.loginUser(invalidUser);
         String alertInvalidMessage = "Username or password is invalid";
