@@ -11,7 +11,6 @@ import static com.codeborne.selenide.Selenide.$x;
 
 public class DashBoardPage extends BasePage {
     private final SelenideElement dashBoardContent = $("#ccontent");
-    private final SelenideElement globalSetting = $(".mn-setting");
     private final SelenideElement logoutButton = $x("//ul[@class='head-menu']//a[text()='Logout']");
     private final String dynamicUserLink = "//div[@id='header']//a[text()='%s']";
 
