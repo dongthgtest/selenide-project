@@ -5,8 +5,8 @@
     <module name="LineLength">
         <property name="max" value="120"/>
     </module>
-    <module name="UnusedImports"/>
     <module name="TreeWalker">
+        <module name="UnusedImports"/>
         <module name="WhitespaceAfter"/>
         <module name="MethodLength">
             <property name="max" value="80"/>

@@ -1,8 +1,12 @@
 name: Java CI with Maven
 
 on:
+  push:
+    branches:
+      - main
   pull_request:
-    branches: [ "main" ]
+    branches: 
+      - main
 
 jobs:
   build:
@@ -17,6 +21,9 @@ jobs:
         java-version: '11'
         distribution: 'temurin'
         cache: maven
+
+    - name: Clean Maven
+      run: mvn clean
 
     - name: Check style java
       run: |
