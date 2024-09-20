@@ -6,12 +6,11 @@ import com.agest.page.NewPage;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.Test;
 
-
 public class DAMainPageTC014 extends TestBase {
     private final LoginPage loginPage = new LoginPage();
     private final DashBoardPage dashBoardPage = new DashBoardPage();
     private final NewPage newPage = new NewPage();
-    private final User validUser = new User("user001", "");
+    private final User validUser = new User("User1", "123");
     private final String newPageName = "DongPage";
 
     @AfterClass(alwaysRun = true)
