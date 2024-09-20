@@ -2,6 +2,7 @@ package com.agest.page;
 
 import com.agest.model.GlobalSetting;
 import com.agest.model.User;
+import com.agest.utils.Constants;
 import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
 
@@ -14,7 +15,7 @@ public class DashBoardPage extends BasePage {
     private final SelenideElement logoutButton = $x("//ul[@class='head-menu']//a[text()='Logout']");
     private final SelenideElement globalSettingButton = $(".mn-setting");
     private final SelenideElement deletePageButton = $(".delete");
-    private final String dynamicPage = "//li[@class='haschild']/following-sibling::li/a[text()='%s']";
+    private final String dynamicPage = "//div[@id='main-menu']//a[text()='%s']";
     private final String dynamicUserLink = "//div[@id='header']//a[text()='%s']";
 
 
@@ -53,7 +54,7 @@ public class DashBoardPage extends BasePage {
     @Step("Page should visible")
     public void shouldPageVisible(String pageName) {
         SelenideElement page = $x(String.format(dynamicPage, pageName));
-        page.shouldBe(visible);
+        page.shouldBe(visible, Constants.SHORT_WAIT);
     }
 
     @Step("Delete page")
