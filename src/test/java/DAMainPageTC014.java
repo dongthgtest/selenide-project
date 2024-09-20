@@ -7,16 +7,17 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.Test;
 
 public class DAMainPageTC014 extends TestBase {
+    private final User user1 = User.getUser1();
+    private final User user2 = User.getUser2();
     private final LoginPage loginPage = new LoginPage();
     private final DashBoardPage dashBoardPage = new DashBoardPage();
     private final NewPage newPage = new NewPage();
-    private final User validUser = new User("User1", "123");
     private final String newPageName = "DongPage";
 
     @AfterClass(alwaysRun = true)
     public void afterClass() {
-        dashBoardPage.logOut(validUser);
-        loginPage.loginUser(adminUser);
+        dashBoardPage.logOut(user1);
+        loginPage.loginUser(user2);
 
         dashBoardPage.openPage(newPageName);
         dashBoardPage.hoverGlobalSetting();
@@ -27,8 +28,8 @@ public class DAMainPageTC014 extends TestBase {
 
     @Test(description = "Verify that 'Public' pages can be visible and accessed by all users of working repository")
     public void testPagesCanBeUseForAllUsersOfWorkingRepository() {
-        loginPage.loginUser(adminUser);
-        dashBoardPage.shouldUserLoginSuccessful(adminUser.getUsername());
+        loginPage.loginUser(user2);
+        dashBoardPage.shouldUserLoginSuccessful(user2.getUsername());
 
         dashBoardPage.selectGlobalSetting(GlobalSetting.ADD_PAGE);
         newPage.inputPageNameField(newPageName);
@@ -36,8 +37,8 @@ public class DAMainPageTC014 extends TestBase {
         newPage.clickOkButton();
         dashBoardPage.shouldPageVisible(newPageName);
 
-        dashBoardPage.logOut(adminUser);
-        loginPage.loginUser(validUser);
+        dashBoardPage.logOut(user2);
+        loginPage.loginUser(user1);
         dashBoardPage.shouldPageVisible(newPageName);
     }
 }
