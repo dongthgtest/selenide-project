@@ -7,8 +7,8 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.Test;
 
 public class DaLoginTC002 extends TestBase {
-    private final LoginPage loginPage = new LoginPage();
     private final User invalidUser = new User("abc", "abc");
+    private final LoginPage loginPage = new LoginPage();
 
     @AfterClass(alwaysRun = true)
     public void afterClass() {

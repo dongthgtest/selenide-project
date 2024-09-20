@@ -8,4 +8,16 @@ import lombok.Data;
 public class User {
     private String username;
     private String password;
+
+    public static User getAdminUser() {
+        return new User("administrator", "");
+    }
+
+    public static User getUser1() {
+        return new User("User1", "123");
+    }
+
+    public static User getUser2() {
+        return new User("User2", "123");
+    }
 }

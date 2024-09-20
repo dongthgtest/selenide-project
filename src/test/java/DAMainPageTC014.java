@@ -7,8 +7,8 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.Test;
 
 public class DAMainPageTC014 extends TestBase {
-    private final User user1 = new User("User1", "123");
-    private final User user2 = new User("User2", "123");
+    private final User user1 = User.getUser1();
+    private final User user2 = User.getUser2();
     private final LoginPage loginPage = new LoginPage();
     private final DashBoardPage dashBoardPage = new DashBoardPage();
     private final NewPage newPage = new NewPage();
