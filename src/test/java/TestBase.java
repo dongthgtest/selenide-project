@@ -1,4 +1,3 @@
-import com.agest.model.User;
 import com.agest.utils.Constants;
 import com.codeborne.selenide.Configuration;
 import org.testng.annotations.AfterClass;
@@ -8,7 +7,6 @@ import static com.codeborne.selenide.Selenide.closeWebDriver;
 import static com.codeborne.selenide.Selenide.open;
 
 public class TestBase {
-    protected final User adminUser = new User("administrator", "");
 
     @BeforeClass
     public void setUp() {

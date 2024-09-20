@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
-<suite name="Selenide Test Suite" thread-count="2" parallel="classes">
+<suite name="Selenide Test Suite" thread-count="3" parallel="classes">
     <listeners>
         <listener class-name="com.agest.listener.RetryListener"/>
     </listeners>
@@ -8,6 +8,7 @@
         <classes>
             <class name="DALoginTC001"/>
             <class name="DaLoginTC002"/>
+            <class name="DAMainPageTC014"/>
         </classes>
     </test>
 </suite>
