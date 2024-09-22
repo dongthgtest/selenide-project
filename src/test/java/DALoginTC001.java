@@ -11,12 +11,12 @@ public class DALoginTC001 extends TestBase {
 
     @AfterClass(alwaysRun = true)
     public void afterClass() {
-        dashBoardPage.logOut(adminUser);
+        dashBoardPage.logOut();
     }
 
     @Test(description = "Verify that user can login specific repository successfully via Dashboard login page with correct credentials")
     public void TC001() {
-        loginPage.loginUser(adminUser);
+        loginPage.login(adminUser);
         dashBoardPage.shouldUserLoginSuccessful(adminUser.getUsername());
     }
 }

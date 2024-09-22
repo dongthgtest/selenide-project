@@ -7,7 +7,7 @@
     <test name="Selenide test">
         <classes>
             <class name="DALoginTC001"/>
-            <class name="DaLoginTC002"/>
+            <class name="DALoginTC002"/>
             <class name="DAMainPageTC014"/>
         </classes>
     </test>
