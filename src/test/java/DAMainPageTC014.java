@@ -1,4 +1,4 @@
-import com.agest.model.GlobalSetting;
+import com.agest.model.Page;
 import com.agest.model.User;
 import com.agest.page.DashBoardPage;
 import com.agest.page.LoginPage;
@@ -12,33 +12,30 @@ public class DAMainPageTC014 extends TestBase {
     private final LoginPage loginPage = new LoginPage();
     private final DashBoardPage dashBoardPage = new DashBoardPage();
     private final NewPage newPage = new NewPage();
-    private final String newPageName = "DongPage";
+    private final Page page = new Page("DongPage", true);
 
     @AfterClass(alwaysRun = true)
     public void afterClass() {
-        dashBoardPage.logOut(user1);
-        loginPage.loginUser(user2);
+        dashBoardPage.logOut();
+        loginPage.login(user2, "Test");
 
-        dashBoardPage.openPage(newPageName);
-        dashBoardPage.hoverGlobalSetting();
+        dashBoardPage.openPage(page);
         dashBoardPage.deletePage();
 
-        dashBoardPage.shouldPageDisappear(newPageName);
+        dashBoardPage.shouldPageDisappear(page);
     }
 
     @Test(description = "Verify that 'Public' pages can be visible and accessed by all users of working repository")
     public void testPagesCanBeUseForAllUsersOfWorkingRepository() {
-        loginPage.loginUser(user2);
+        loginPage.login(user2, "Test");
         dashBoardPage.shouldUserLoginSuccessful(user2.getUsername());
 
-        dashBoardPage.selectGlobalSetting(GlobalSetting.ADD_PAGE);
-        newPage.inputPageNameField(newPageName);
-        newPage.checkPublicCheckBox();
-        newPage.clickOkButton();
-        dashBoardPage.shouldPageVisible(newPageName);
+        dashBoardPage.selectGlobalSettingAddPage();
+        newPage.createNewPage(page);
+        dashBoardPage.shouldPageVisible(page);
 
-        dashBoardPage.logOut(user2);
-        loginPage.loginUser(user1);
-        dashBoardPage.shouldPageVisible(newPageName);
+        dashBoardPage.logOut();
+        loginPage.login(user1, "Test");
+        dashBoardPage.shouldPageVisible(page);
     }
 }
