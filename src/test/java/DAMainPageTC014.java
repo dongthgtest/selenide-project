@@ -12,12 +12,13 @@ public class DAMainPageTC014 extends TestBase {
     private final LoginPage loginPage = new LoginPage();
     private final DashBoardPage dashBoardPage = new DashBoardPage();
     private final NewPage newPage = new NewPage();
-    private final Page page = new Page("DongPage", true);
+    private final Page page = new Page("" + System.currentTimeMillis(), true);
+    private final String testRepo = "Test";
 
     @AfterClass(alwaysRun = true)
     public void afterClass() {
         dashBoardPage.logOut();
-        loginPage.login(user2, "Test");
+        loginPage.login(user2, testRepo);
 
         dashBoardPage.openPage(page);
         dashBoardPage.deletePage();
@@ -27,7 +28,7 @@ public class DAMainPageTC014 extends TestBase {
 
     @Test(description = "Verify that 'Public' pages can be visible and accessed by all users of working repository")
     public void testPagesCanBeUseForAllUsersOfWorkingRepository() {
-        loginPage.login(user2, "Test");
+        loginPage.login(user2, testRepo);
         dashBoardPage.shouldUserLoginSuccessful(user2.getUsername());
 
         dashBoardPage.selectGlobalSettingAddPage();
@@ -35,7 +36,7 @@ public class DAMainPageTC014 extends TestBase {
         dashBoardPage.shouldPageVisible(page);
 
         dashBoardPage.logOut();
-        loginPage.login(user1, "Test");
+        loginPage.login(user1, testRepo);
         dashBoardPage.shouldPageVisible(page);
     }
 }

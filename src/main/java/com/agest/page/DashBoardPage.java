@@ -2,6 +2,7 @@ package com.agest.page;
 
 import com.agest.model.GlobalSetting;
 import com.agest.model.Page;
+import com.agest.utils.AlertUtils;
 import com.agest.utils.Constants;
 import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
@@ -65,6 +66,7 @@ public class DashBoardPage extends BasePage {
     public void deletePage() {
         globalSettingButton.hover();
         deletePageButton.click();
+        AlertUtils.accept();
     }
 
     @Step("Page should disappear")

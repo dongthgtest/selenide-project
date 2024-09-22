@@ -9,6 +9,7 @@
             <class name="DALoginTC001"/>
             <class name="DALoginTC002"/>
             <class name="DAMainPageTC014"/>
+            <class name="DAPanelTC027"/>
         </classes>
     </test>
 </suite>

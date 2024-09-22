@@ -1,7 +1,4 @@
-import com.agest.model.Page;
-import com.agest.model.Panel;
-import com.agest.model.Series;
-import com.agest.model.User;
+import com.agest.model.*;
 import com.agest.page.*;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
@@ -19,16 +16,13 @@ public class DAPanelTC027 extends TestBase {
     private final ChoosePanelPage choosePanelPage = new ChoosePanelPage();
     private final PanelManagerPage panelManagerPage = new PanelManagerPage();
     private final Series s = Series.getRandomSeries();
-    private final Panel panel = new Panel("zbox", s);
+    private final Panel panel = new Panel("zbox" + System.currentTimeMillis(), s);
     private final Page page = new Page("Page 1", true);
     private List<Panel> presetCharts;
 
-
     @AfterClass(alwaysRun = true)
     public void afterClass() {
-        dashBoardPage.openPage(page);
         dashBoardPage.deletePage();
-
         dashBoardPage.openPanelManager();
         panelManagerPage.deletePanel(panel);
     }
@@ -53,9 +47,10 @@ public class DAPanelTC027 extends TestBase {
         dashBoardPage.openChoosePanel();
         choosePanelPage.waitForChoosePanelsPageVisible();
 
-        Assert.assertEquals(choosePanelPage.getChartsPanel(), presetCharts, "Charts panel is not displayed as expected");
-        Assert.assertEquals(choosePanelPage.getIndicatorsPanel(), Panel.getIndicatorsPanel(), "Indicators panel is not displayed as expected");
-        Assert.assertEquals(choosePanelPage.getReportsPanel(), Panel.getReportsPanel(), "Reports panel is not displayed as expected");
-        Assert.assertEquals(choosePanelPage.getHeatMapsPanel(), Panel.getHeatMapsPanel(), "Heat Maps panel is not displayed as expected");
+        // Verify that when each panels form is expanded all pre-set panels are populated and sorted correctly
+        Assert.assertEquals(choosePanelPage.getChartsPanel(), presetCharts, PanelType.CHARTS.getErrorMessage());
+        Assert.assertEquals(choosePanelPage.getIndicatorsPanel(), Panel.getIndicatorsPanel(), PanelType.INDICATORS.getErrorMessage());
+        Assert.assertEquals(choosePanelPage.getReportsPanel(), Panel.getReportsPanel(), PanelType.REPORTS.getErrorMessage());
+        Assert.assertEquals(choosePanelPage.getHeatMapsPanel(), Panel.getHeatMapsPanel(), PanelType.HEAT_MAPS.getErrorMessage());
     }
 }
