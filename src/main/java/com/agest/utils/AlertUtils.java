@@ -17,7 +17,7 @@ public class AlertUtils {
         return alert.getText();
     }
 
-    public static void closeAlert() {
+    public static void accept() {
         Alert alert = WebDriverRunner.getWebDriver().switchTo().alert();
         alert.accept();
     }

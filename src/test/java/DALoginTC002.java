@@ -6,19 +6,19 @@ import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.Test;
 
-public class DaLoginTC002 extends TestBase {
+public class DALoginTC002 extends TestBase {
     private final User invalidUser = new User("abc", "abc");
     private final LoginPage loginPage = new LoginPage();
 
     @AfterClass(alwaysRun = true)
     public void afterClass() {
-        AlertUtils.closeAlert();
+        AlertUtils.accept();
     }
 
     @Test(description = "Verify that user fails to login specific repository successfully via Dashboard login page with incorrect credentials",
             retryAnalyzer = RetryAnalyzer.class)
     public void TC002() {
-        loginPage.loginUser(invalidUser);
+        loginPage.login(invalidUser);
         String alertInvalidMessage = "Username or password is invalid";
         Assert.assertEquals(AlertUtils.getAlertContent(), alertInvalidMessage);
     }
