@@ -2,6 +2,7 @@ package com.agest.page;
 
 import com.agest.model.GlobalSetting;
 import com.agest.model.Page;
+import com.agest.model.User;
 import com.agest.utils.AlertUtils;
 import com.agest.utils.Constants;
 import com.codeborne.selenide.SelenideElement;
@@ -20,12 +21,14 @@ public class DashBoardPage extends BasePage {
     private final SelenideElement userLink = $x("//a[@href='#Welcome']");
     private final SelenideElement administerLink = $x("//a[@href='#Administer']");
     private final SelenideElement panelsButton = $x("//a[text()='Panels']");
+    private final SelenideElement parentPage = $(".active.haschild");
     private final String dynamicPage = "//div[@id='main-menu']//a[text()='%s']";
+    private final String dynamicChildPage = "//div[@id='main-menu']//li[@class='active haschild']//a[text()='%s']";
 
-    @Step("Should user {username} is login successful")
-    public void shouldUserLoginSuccessful(String username) {
+    @Step("Should user is login successful")
+    public void shouldUserLoginSuccessful(User user) {
         dashBoardContent.should(appear);
-        userLink.shouldHave(text(username));
+        userLink.shouldHave(text(user.getUsername()));
     }
 
     @Step("Log out")
@@ -42,37 +45,66 @@ public class DashBoardPage extends BasePage {
         selectGlobalSetting(GlobalSetting.CREATE_PANEL);
     }
 
-    @Step("Open {option}")
+    @Step("Open {globalSetting.name}")
     private void selectGlobalSetting(GlobalSetting globalSetting) {
         String dynamicGlobalSetting = "//a[@class='add' and text()='%s']";
-        SelenideElement settingOption = $x(String.format(dynamicGlobalSetting, globalSetting.getName()));
         globalSettingButton.hover();
-        settingOption.click();
+        $x(String.format(dynamicGlobalSetting, globalSetting.getName())).click();
     }
 
     @Step("Open {page.pageName}")
     public void openPage(Page page) {
-        SelenideElement targetPage = $x(String.format(dynamicPage, page.getPageName()));
-        targetPage.click();
+        $x(String.format(dynamicPage, page.getPageName())).click();
+    }
+
+    @Step("Open child page")
+    public void openChildPage(Page childPage, Page parentPage) {
+        hoverParentPage(parentPage);
+        $x(String.format(dynamicChildPage, childPage.getPageNameFormat())).click();
+    }
+
+    @Step("Should child page deleted")
+    public void shouldChildPageDeleted(Page childPage, Page parentPage) {
+        hoverParentPage(parentPage);
+        $x(String.format(dynamicChildPage, childPage.getPageName())).shouldBe(disappear);
+    }
+
+    @Step("Hover to parent page")
+    private void hoverParentPage(Page parentPage) {
+        $x(String.format(dynamicPage, parentPage.getPageNameFormat())).hover();
     }
 
     @Step("Page should visible")
     public void shouldPageVisible(Page page) {
-        SelenideElement targetPage = $x(String.format(dynamicPage, page.getPageNameFormat()));
-        targetPage.shouldBe(visible, Constants.SHORT_WAIT);
+        $x(String.format(dynamicPage, page.getPageNameFormat())).shouldBe(visible, Constants.SHORT_WAIT);
     }
 
-    @Step("Delete page")
+    @Step("Child page should visible")
+    public void shouldChildPageVisible(Page childPage) {
+        parentPage.hover();
+        $x(String.format(dynamicChildPage, childPage.getPageNameFormat())).shouldBe(visible, Constants.SHORT_WAIT);
+    }
+
+    @Step("Delete page completely")
     public void deletePage() {
+        clickDeletePage();
+        AlertUtils.accept();
+    }
+
+    @Step("Click delete page")
+    public void clickDeletePage() {
         globalSettingButton.hover();
         deletePageButton.click();
-        AlertUtils.accept();
     }
 
     @Step("Page should disappear")
     public void shouldPageDisappear(Page page) {
-        SelenideElement targetPage = $x(String.format(dynamicPage, page.getPageName()));
-        targetPage.shouldBe(disappear);
+        $x(String.format(dynamicPage, page.getPageName())).shouldBe(disappear);
+    }
+
+    @Step("Delete button should disappears")
+    public void shouldDeleteButtonDisappears() {
+        deletePageButton.shouldBe(disappear);
     }
 
     @Step("Open choose panel")

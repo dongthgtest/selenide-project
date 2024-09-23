@@ -6,6 +6,10 @@ import org.openqa.selenium.Alert;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 public class AlertUtils {
+    public static Alert instance() {
+        return WebDriverRunner.getWebDriver().switchTo().alert();
+    }
+
     public static void waitForAlertDisplayed(int timeoutMilliseconds) {
         SelenideWait selenideWait = new SelenideWait(WebDriverRunner.getWebDriver(), timeoutMilliseconds, 200);
         selenideWait.until(ExpectedConditions.alertIsPresent());
@@ -13,12 +17,10 @@ public class AlertUtils {
 
     public static String getAlertContent() {
         waitForAlertDisplayed(5000);
-        Alert alert = WebDriverRunner.getWebDriver().switchTo().alert();
-        return alert.getText();
+        return instance().getText().replace("\n", "");
     }
 
     public static void accept() {
-        Alert alert = WebDriverRunner.getWebDriver().switchTo().alert();
-        alert.accept();
+        instance().accept();
     }
 }

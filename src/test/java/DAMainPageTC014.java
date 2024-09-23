@@ -7,8 +7,8 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.Test;
 
 public class DAMainPageTC014 extends TestBase {
-    private final User user1 = User.getUser1();
-    private final User user2 = User.getUser2();
+    private final User firstUser = User.getUser1();
+    private final User secondUser = User.getUser3();
     private final LoginPage loginPage = new LoginPage();
     private final DashBoardPage dashBoardPage = new DashBoardPage();
     private final NewPage newPage = new NewPage();
@@ -18,7 +18,7 @@ public class DAMainPageTC014 extends TestBase {
     @AfterClass(alwaysRun = true)
     public void afterClass() {
         dashBoardPage.logOut();
-        loginPage.login(user2, testRepo);
+        loginPage.login(firstUser, testRepo);
 
         dashBoardPage.openPage(page);
         dashBoardPage.deletePage();
@@ -28,15 +28,15 @@ public class DAMainPageTC014 extends TestBase {
 
     @Test(description = "Verify that 'Public' pages can be visible and accessed by all users of working repository")
     public void testPagesCanBeUseForAllUsersOfWorkingRepository() {
-        loginPage.login(user2, testRepo);
-        dashBoardPage.shouldUserLoginSuccessful(user2.getUsername());
+        loginPage.login(firstUser, testRepo);
+        dashBoardPage.shouldUserLoginSuccessful(firstUser);
 
         dashBoardPage.selectGlobalSettingAddPage();
         newPage.createNewPage(page);
         dashBoardPage.shouldPageVisible(page);
 
         dashBoardPage.logOut();
-        loginPage.login(user1, testRepo);
+        loginPage.login(secondUser, testRepo);
         dashBoardPage.shouldPageVisible(page);
     }
 }

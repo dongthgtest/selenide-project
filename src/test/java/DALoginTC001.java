@@ -17,6 +17,6 @@ public class DALoginTC001 extends TestBase {
     @Test(description = "Verify that user can login specific repository successfully via Dashboard login page with correct credentials")
     public void TC001() {
         loginPage.login(adminUser);
-        dashBoardPage.shouldUserLoginSuccessful(adminUser.getUsername());
+        dashBoardPage.shouldUserLoginSuccessful(adminUser);
     }
 }
