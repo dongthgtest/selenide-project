@@ -12,7 +12,7 @@ public class DALoginTC002 extends TestBase {
 
     @AfterClass(alwaysRun = true)
     public void afterClass() {
-        AlertUtils.accept();
+        loginPage.acceptAlert();
     }
 
     @Test(description = "Verify that user fails to login specific repository successfully via Dashboard login page with incorrect credentials",

@@ -20,4 +20,8 @@ public class User {
     public static User getUser2() {
         return new User("User2", "123");
     }
+
+    public static User getUser3() {
+        return new User("User3", "123");
+    }
 }

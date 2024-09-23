@@ -30,7 +30,7 @@ public class DAPanelTC027 extends TestBase {
     @Test(description = "Verify that when 'Choose panels' form is expanded all pre-set panels are populated and sorted correctly")
     public void testPagesCanBeUseForAllUsersOfWorkingRepository() {
         loginPage.login(adminUser);
-        dashBoardPage.shouldUserLoginSuccessful(adminUser.getUsername());
+        dashBoardPage.shouldUserLoginSuccessful(adminUser);
 
         dashBoardPage.selectGlobalSettingAddPage();
         newPage.createNewPage(page);

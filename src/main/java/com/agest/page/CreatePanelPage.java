@@ -2,7 +2,6 @@ package com.agest.page;
 
 import com.agest.model.Panel;
 import com.agest.model.Series;
-import com.agest.utils.Constants;
 import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
 
@@ -30,7 +29,7 @@ public class CreatePanelPage extends BasePage {
         enterDisplayName(panelData.getDisplayName());
         selectSeries(panelData.getSeries());
         okButton.click();
-        waitForVisible(panelConfigHeader, Constants.SHORT_WAIT);
+        waitForVisible(panelConfigHeader);
         okButton.click();
     }
 }

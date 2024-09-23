@@ -1,7 +1,6 @@
 package com.agest.page;
 
 import com.agest.model.User;
-import com.agest.utils.Constants;
 import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
 
@@ -50,7 +49,7 @@ public class LoginPage extends BasePage {
     private void switchRepo(String repo) {
         listRepository.click();
         SelenideElement targetRepo = $x(String.format(dynamicRepository, repo));
-        waitForVisible(targetRepo, Constants.SHORT_WAIT);
+        waitForVisible(targetRepo);
         targetRepo.click();
     }
 }
