@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="Selenide Test Suite" thread-count="2" parallel="tests">
+    <listeners>
+        <listener class-name="com.agest.listener.RetryListener"/>
+    </listeners>
+    <parameter name="isEnableGrid" value="true"/>
+    <test name="node 1">
+        <classes>
+            <class name="DALoginTC002"/>
+            <class name="DAPanelTC027"/>
+        </classes>
+    </test>
+    <test name="node 2">
+        <classes>
+            <class name="DALoginTC001"/>
+            <class name="DAMainPageTC014"/>
+            <class name="DAMainPageTC017"/>
+        </classes>
+    </test>
+</suite>
