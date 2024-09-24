@@ -20,7 +20,7 @@ public class Panel implements Comparable<Panel> {
         this.displayName = displayName;
     }
 
-    public static List<Panel> getChartsPanel() {
+    public static List<Panel> getChartsPanelPreset() {
         return new LinkedList<>(Arrays.asList(
                 new Panel("Action Implementation By Status"),
                 new Panel("Test Case Execution Failure Trend"),
@@ -35,7 +35,7 @@ public class Panel implements Comparable<Panel> {
         ));
     }
 
-    public static List<Panel> getIndicatorsPanel() {
+    public static List<Panel> getIndicatorsPanelPreset() {
         return Arrays.asList(
                 new Panel("Test Case Execution"),
                 new Panel("Test Module Execution"),
@@ -43,13 +43,13 @@ public class Panel implements Comparable<Panel> {
         );
     }
 
-    public static List<Panel> getReportsPanel() {
+    public static List<Panel> getReportsPanelPreset() {
         return Arrays.asList(
                 new Panel("Test Module Execution Results Report")
         );
     }
 
-    public static List<Panel> getHeatMapsPanel() {
+    public static List<Panel> getHeatMapsPanelPreset() {
         return Arrays.asList(
                 new Panel("Test Case Execution History"),
                 new Panel("Test Module Execution History")
