@@ -4,6 +4,7 @@
     <listeners>
         <listener class-name="com.agest.listener.RetryListener"/>
     </listeners>
+    <parameter name="isEnableGrid" value="false"/>
     <test name="Selenide test">
         <classes>
             <class name="DALoginTC001"/>
