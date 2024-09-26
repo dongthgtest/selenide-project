@@ -9,7 +9,7 @@ import com.agest.utils.Utils;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-public class DAMainPageTC017 extends TestBase {
+public class MainPage017 extends TestBase {
     private final User user = User.getUser2();
     private final LoginPage loginPage = new LoginPage();
     private final DashBoardPage dashBoardPage = new DashBoardPage();

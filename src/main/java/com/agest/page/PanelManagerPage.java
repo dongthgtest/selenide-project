@@ -10,7 +10,8 @@ public class PanelManagerPage extends BasePage {
 
     @Step("Delete panel")
     public void deletePanel(Panel panel) {
-        String dynamicPanelDeleteButton = "//td[input[@id='chkDelPanel']]/following-sibling::td[a[text()='%s']]/following-sibling::td/a[text()='Delete']";
+        String dynamicPanelDeleteButton = "//td[input[@id='chkDelPanel']]/following-sibling::td[a[text()='%s']]" +
+                "/following-sibling::td/a[text()='Delete']";
         $x(String.format(dynamicPanelDeleteButton, panel.getDisplayName())).click();
         AlertUtils.accept();
     }

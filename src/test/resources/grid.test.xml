@@ -4,18 +4,18 @@
     <listeners>
         <listener class-name="com.agest.listener.RetryListener"/>
     </listeners>
-    <parameter name="isEnableGrid" value="true"/>
     <test name="node 1">
         <classes>
-            <class name="DALoginTC002"/>
-            <class name="DAPanelTC027"/>
+            <class name="Login002"/>
+            <class name="MainPage017"/>
         </classes>
     </test>
     <test name="node 2">
         <classes>
-            <class name="DALoginTC001"/>
-            <class name="DAMainPageTC014"/>
-            <class name="DAMainPageTC017"/>
+            <class name="Login001"/>
+            <class name="MainPage014"/>
+            <class name="Panel027"/>
+
         </classes>
     </test>
 </suite>

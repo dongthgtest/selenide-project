@@ -7,7 +7,7 @@ import org.testng.asserts.SoftAssert;
 import java.util.Collections;
 import java.util.List;
 
-public class DAPanelTC027 extends TestBase {
+public class Panel027 extends TestBase {
     private final User adminUser = User.getAdminUser();
     private final LoginPage loginPage = new LoginPage();
     private final DashBoardPage dashBoardPage = new DashBoardPage();
@@ -20,7 +20,7 @@ public class DAPanelTC027 extends TestBase {
     private final Page page = new Page("Page 1", true);
     private final SoftAssert softAssert = new SoftAssert();
 
-    private List<Panel> presetCharts;
+    private List<Panel> panelPreset;
 
     @AfterClass(alwaysRun = true)
     public void afterClass() {
@@ -42,15 +42,15 @@ public class DAPanelTC027 extends TestBase {
         createPanelPage.createPanel(panel);
 
         // Add created panel to charts panel and sort
-        presetCharts = Panel.getChartsPanelPreset();
-        presetCharts.add(panel);
-        Collections.sort(presetCharts);
+        panelPreset = Panel.getChartsPanelPreset();
+        panelPreset.add(panel);
+        Collections.sort(panelPreset);
 
         dashBoardPage.openChoosePanel();
         choosePanelPage.waitForChoosePanelsPageVisible();
 
         // Verify that when each panels form is expanded all pre-set panels are populated and sorted correctly
-        softAssert.assertEquals(choosePanelPage.getChartsPanel(), presetCharts, PanelType.CHARTS.getErrorMessage());
+        softAssert.assertEquals(choosePanelPage.getChartsPanel(), panelPreset, PanelType.CHARTS.getErrorMessage());
         softAssert.assertEquals(choosePanelPage.getIndicatorsPanel(), Panel.getIndicatorsPanelPreset(), PanelType.INDICATORS.getErrorMessage());
         softAssert.assertEquals(choosePanelPage.getReportsPanel(), Panel.getReportsPanelPreset(), PanelType.REPORTS.getErrorMessage());
         softAssert.assertEquals(choosePanelPage.getHeatMapsPanel(), Panel.getHeatMapsPanelPreset(), PanelType.HEAT_MAPS.getErrorMessage());

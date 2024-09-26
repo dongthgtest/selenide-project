@@ -6,7 +6,7 @@ import com.agest.page.NewPage;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.Test;
 
-public class DAMainPageTC014 extends TestBase {
+public class MainPage014 extends TestBase {
     private final User firstUser = User.getUser1();
     private final User secondUser = User.getUser3();
     private final LoginPage loginPage = new LoginPage();

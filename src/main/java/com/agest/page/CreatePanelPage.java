@@ -12,7 +12,8 @@ public class CreatePanelPage extends BasePage {
     private final SelenideElement displayNameInput = $("#txtDisplayName");
     private final SelenideElement seriesDropDown = $("#cbbSeriesField");
     private final SelenideElement panelConfigHeader = $("#ui-dialog-title-div_panelConfigurationDlg");
-    private final SelenideElement okButton = $x("//div[@role='dialog' and contains(@style,'display: block')]//input[@id='OK']");
+    private final SelenideElement okButton = $x("//div[@role='dialog' and contains(@style,'display: block')]" +
+            "//input[@id='OK']");
     private final String dynamicSeries = "//select[@id='cbbSeriesField']";
 
     @Step("Enter display name {displayName}")
