@@ -3,6 +3,7 @@ import com.agest.model.User;
 import com.agest.page.DashBoardPage;
 import com.agest.page.LoginPage;
 import com.agest.page.NewPage;
+import com.agest.utils.Constants;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.Test;
 
@@ -13,12 +14,11 @@ public class MainPage014 extends TestBase {
     private final DashBoardPage dashBoardPage = new DashBoardPage();
     private final NewPage newPage = new NewPage();
     private final Page page = new Page("" + System.currentTimeMillis(), true);
-    private final String testRepo = "Test";
 
     @AfterClass(alwaysRun = true)
     public void afterClass() {
         dashBoardPage.logOut();
-        loginPage.login(firstUser, testRepo);
+        loginPage.login(firstUser, Constants.TEST_REPO);
 
         dashBoardPage.openPage(page);
         dashBoardPage.deletePage();
@@ -28,7 +28,7 @@ public class MainPage014 extends TestBase {
 
     @Test(description = "Verify that 'Public' pages can be visible and accessed by all users of working repository")
     public void testPagesCanBeUseForAllUsersOfWorkingRepository() {
-        loginPage.login(firstUser, testRepo);
+        loginPage.login(firstUser, Constants.TEST_REPO);
         dashBoardPage.shouldUserLoginSuccessful(firstUser);
 
         dashBoardPage.selectGlobalSettingAddPage();
@@ -36,7 +36,7 @@ public class MainPage014 extends TestBase {
         dashBoardPage.shouldPageVisible(page);
 
         dashBoardPage.logOut();
-        loginPage.login(secondUser, testRepo);
+        loginPage.login(secondUser, Constants.TEST_REPO);
         dashBoardPage.shouldPageVisible(page);
     }
 }

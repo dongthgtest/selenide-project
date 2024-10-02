@@ -5,6 +5,7 @@ import com.agest.page.DashBoardPage;
 import com.agest.page.LoginPage;
 import com.agest.page.NewPage;
 import com.agest.utils.AlertUtils;
+import com.agest.utils.Constants;
 import com.agest.utils.Utils;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -23,7 +24,7 @@ public class MainPage017 extends TestBase {
     @Test(description = "Verify that user can remove any main parent page except 'Overview' page successfully " +
             "and the order of pages stays persistent as long as there is not children page under")
     public void testUserCanRemovePageWithNoChildrenPage() {
-        loginPage.login(user, "Test");
+        loginPage.login(user, Constants.TEST_REPO);
         dashBoardPage.shouldUserLoginSuccessful(user);
 
         dashBoardPage.selectGlobalSettingAddPage();
