@@ -83,6 +83,7 @@
                     <systemPropertyVariables>
                         <remote>false</remote>
                         <maxRetryCount>0</maxRetryCount>
+                        <threadCount>${threadCount}</threadCount>
                     </systemPropertyVariables>
                     <argLine>
                         -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"
@@ -133,7 +134,7 @@
                 <executions>
                     <execution>
                         <id>allure-generate</id>
-                        <phase>verify</phase>
+                        <phase>test</phase>
                         <goals>
                             <goal>exec</goal>
                         </goals>

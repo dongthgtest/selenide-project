@@ -9,8 +9,6 @@
             <class name="Login001"/>
             <class name="Login002"/>
             <class name="MainPage014"/>
-            <class name="MainPage017"/>
-            <class name="Panel027"/>
         </classes>
     </test>
 </suite>

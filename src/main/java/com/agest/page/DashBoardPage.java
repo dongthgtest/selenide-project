@@ -6,11 +6,15 @@ import com.agest.model.User;
 import com.agest.utils.AlertUtils;
 import com.agest.utils.Constants;
 import com.codeborne.selenide.SelenideElement;
+import com.codeborne.selenide.WebDriverRunner;
 import io.qameta.allure.Step;
+import org.testng.Assert;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.codeborne.selenide.Condition.*;
-import static com.codeborne.selenide.Selenide.$;
-import static com.codeborne.selenide.Selenide.$x;
+import static com.codeborne.selenide.Selenide.*;
 
 public class DashBoardPage extends BasePage {
     private final SelenideElement dashBoardContent = $("#ccontent");
@@ -54,7 +58,12 @@ public class DashBoardPage extends BasePage {
 
     @Step("Open {page.pageName}")
     public void openPage(Page page) {
-        $x(String.format(dynamicPage, page.getPageName())).click();
+        openPage(page.getPageName());
+    }
+
+    @Step("Open {pageName}")
+    private void openPage(String pageName) {
+        $x(String.format(dynamicPage, pageName)).click();
     }
 
     @Step("Open child page")
@@ -116,5 +125,37 @@ public class DashBoardPage extends BasePage {
     public void openPanelManager() {
         administerLink.hover();
         panelsButton.click();
+    }
+
+    public void isAllOtherElementBlockedOrLocked(String expectedUrl) {
+        List<String> errorMessages = getErrorMessages(expectedUrl);
+        Assert.assertTrue(errorMessages.isEmpty(), errorMessages.toString());
+    }
+
+    @Step("Verify all other elements are blocked/locked")
+    private List<String> getErrorMessages(String expectedUrl) {
+        List<String> errorMessages = new ArrayList<>();
+        List<SelenideElement> menuElements = $$x("//div[@id='main-menu']//li/a");
+        menuElements.forEach(element -> {
+            if (!isElementsBlocked(element)) {
+                errorMessages.add("This element is not blocked: " + element);
+            }
+        });
+        List<SelenideElement> headerElements = $$x("//ul[@class='head-menu']//li/a");
+        headerElements.forEach(element -> {
+            if (!isElementLocked(element, expectedUrl)) {
+                errorMessages.add("This element is not locked: " + element);
+            }
+        });
+        return errorMessages;
+    }
+
+    private boolean isElementLocked(SelenideElement element, String expectedUrl) {
+        element.click();
+        return WebDriverRunner.getWebDriver().getCurrentUrl().equals(expectedUrl) && isPopupDisplayed();
+    }
+
+    private boolean isPopupDisplayed() {
+        return $("#ui-dialog-title-div_panelPopup").isDisplayed();
     }
 }

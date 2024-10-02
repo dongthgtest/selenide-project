@@ -5,7 +5,6 @@ import lombok.Data;
 
 @Data
 public class TestConfig {
-    private String browser;
     private String remote;
     private String maxRetry;
     private boolean headless;
@@ -15,7 +14,6 @@ public class TestConfig {
     private static TestConfig instance = null;
 
     private TestConfig() {
-        this.browser = "chrome";
         this.remote = null;
         this.headless = false;
         this.reportFolder = "allure-results";
