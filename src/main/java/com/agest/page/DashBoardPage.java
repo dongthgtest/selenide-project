@@ -25,6 +25,7 @@ public class DashBoardPage extends BasePage {
     private final SelenideElement userLink = $x("//a[@href='#Welcome']");
     private final SelenideElement administerLink = $x("//a[@href='#Administer']");
     private final SelenideElement panelsButton = $x("//a[text()='Panels']");
+    private final SelenideElement dataProfileButton = $x("//a[text()='Data Profiles']");
     private final SelenideElement parentPage = $(".active.haschild");
     private final String dynamicPage = "//div[@id='main-menu']//a[text()='%s']";
     private final String dynamicChildPage = "//div[@id='main-menu']//li[@class='active haschild']//a[text()='%s']";
@@ -125,6 +126,12 @@ public class DashBoardPage extends BasePage {
     public void openPanelManager() {
         administerLink.hover();
         panelsButton.click();
+    }
+
+    @Step("Open data profiles")
+    public void openDataProfiles() {
+        administerLink.hover();
+        dataProfileButton.click();
     }
 
     public void isAllOtherElementBlockedOrLocked(String expectedUrl) {
