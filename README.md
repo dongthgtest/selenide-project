@@ -1,6 +1,8 @@
 # Selenide Project
 
-This project is built using Maven and designed to run automated UI tests using [Selenide](https://selenide.org/). It includes dependencies for logging, reporting, and test execution with TestNG, Allure, and SLF4J. The project uses Java 11 and integrates tools like Checkstyle for code quality checks.
+This project is built using Maven and designed to run automated UI tests using [Selenide](https://selenide.org/). It
+includes dependencies for logging, reporting, and test execution with TestNG, Allure, and SLF4J. The project uses Java
+11 and integrates tools like Checkstyle for code quality checks.
 
 ## Requirements
 
@@ -41,7 +43,7 @@ This project is built using Maven and designed to run automated UI tests using [
 - **Maven Project Info Reports Plugin** (`3.0.0`): Provides detailed project reports.
 - **Checkstyle Report**: Generates a Checkstyle report for code quality analysis.
 
-## Setup and Installation
+## Setup, Installation
 
 1. **Clone the repository**:
     ```bash
@@ -58,34 +60,63 @@ This project is built using Maven and designed to run automated UI tests using [
     mvn clean install
     ```
 
-4. **Run Tests**:
+## Install TA to run test with TA Dashboard
+
+Please contact with Agest to get TA installation. <br>
+Once you have TA installed, please import Test repo to Repository Server using Test.dat file
+from`src/test/resources/test_data/Test_2024-09-18_14-22-25.dat`
+
+## Run Tests
+
+1. **To run all test:**
+   ```bash
+      mvn clean test -Dsurefire.suiteXmlFiles=src/test/resources/test.xml
+   ```
+2. **To run specific test you can select the test to run in specific.test.xml then run this command:**
+   ```bash
+     mvn clean test -Dsurefire.suiteXmlFiles=src/test/resources/specific.test.xml
+   ```
+3. **To run selenium grid you can config the remote url in Constants.GRID_HUB_URL then enable the remote flag using:**
+   ```bash
+     -Dremote=true
+   ```
+4. **To run parallel enter number of thread-count using:**
+   ```bash
+     -DthreadCount={number-of-thread-count} 
+      example: -DthreadCount=5
+   ```
+5. **To run test with specific browser (default is chrome):**
     ```bash
-    mvn test
+      -Dselenide.browser={browser}
+      example: -Dselenide.browser=edge
     ```
 
-5. **Generate Allure Report**:
-   After running the tests, generate the Allure report by running:
+5. **Example of full maven command with all option**
     ```bash
-    mvn allure:serve
+      mvn -Dselenide.browser=edge clean test -Dsurefire.suiteXmlFiles=src/test/resources/grid.test.xml -Dremote=true -DthreadCount=4
     ```
 
-6. **Checkstyle Validation**:
-   To run Checkstyle validation:
-    ```bash
-    mvn checkstyle:check
-    ```
+## How to get report
 
-## Maven Commands
+- **Generate Allure Report**:
+  <br>
+  Make sure you delete folder allure-results before run test.
+  <br>
+  After running the tests, generate the Allure report by running:
 
-- **Compile the project**:
-    ```bash
-    mvn compile
-    ```
+```bash
+allure serve
+```
 
-- **Run the tests**:
-    ```bash
-    mvn test
-    ```
+Or you can get html report after generate single-file report by running:
+
+```bash
+allure generate --single-file
+```
+
+Now you can get html report by open <b>index.html</b> in allure-report folder
+
+## Maven Other Commands
 
 - **Generate project site**:
     ```bash
@@ -97,16 +128,3 @@ This project is built using Maven and designed to run automated UI tests using [
     mvn checkstyle:check
     ```
 
-## Folder Structure
-
-- **src/test/java**: Contains the test cases.
-- **src/main/resources**: Contains resources such as configuration files.
-
-## Additional Information
-
-- The project uses **SLF4J** for logging with the **simple** implementation (`slf4j-simple`), which logs messages to the console.
-- The `maven-surefire-plugin` is configured with **AspectJ Weaver** for runtime weaving of aspects.
-
-## License
-
-This project is licensed under the MIT License.

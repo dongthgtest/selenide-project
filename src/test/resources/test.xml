@@ -11,6 +11,9 @@
             <class name="MainPage014"/>
             <class name="MainPage017"/>
             <class name="Panel027"/>
+            <class name="Panel028"/>
+            <class name="DataProfile065"/>
+            <class name="DataProfile067"/>
         </classes>
     </test>
 </suite>
