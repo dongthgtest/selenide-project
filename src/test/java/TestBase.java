@@ -23,7 +23,7 @@ public class TestBase {
         if (System.getProperty("remote").equals("true")) {
             Configuration.remote = testConfig.remote();
         }
-        Configuration.browser = System.getProperty("selenide.browser");
+        Configuration.browser = testConfig.getBrowser();
         Configuration.startMaximized = testConfig.isStartMaximized();
         Configuration.reportsFolder = testConfig.getReportFolder();
         Configuration.timeout = testConfig.getTimeout();

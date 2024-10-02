@@ -31,4 +31,8 @@ public class TestConfig {
     public String remote() {
         return Constants.GRID_HUB_URL;
     }
+
+    public String getBrowser() {
+        return System.getProperty("selenide.browser") == null ? "chrome" : System.getProperty("selenide.browser");
+    }
 }
