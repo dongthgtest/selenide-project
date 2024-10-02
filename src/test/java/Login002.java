@@ -6,7 +6,7 @@ import com.agest.utils.AlertUtils;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-public class DALoginTC002 extends TestBase {
+public class Login002 extends TestBase {
     private final User invalidUser = new User("abc", "abc");
     private final LoginPage loginPage = new LoginPage();
 

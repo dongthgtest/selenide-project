@@ -1,25 +1,36 @@
+import com.agest.config.TestConfig;
 import com.agest.utils.Constants;
 import com.codeborne.selenide.Configuration;
+import lombok.extern.slf4j.Slf4j;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Parameters;
+import org.testng.annotations.BeforeSuite;
 
 import static com.codeborne.selenide.Selenide.closeWebDriver;
 import static com.codeborne.selenide.Selenide.open;
 
+@Slf4j
 public class TestBase {
+    private final TestConfig testConfig = TestConfig.getInstance();
 
-    @Parameters({"isEnableGrid"})
+    @BeforeSuite
+    public void beforeTestSuite() {
+        log.info("Retry time : " + System.getProperty("maxRetryCount"));
+        log.info("Grid: " + System.getProperty("remote"));
+        log.info("Browser: " + System.getProperty("selenide.browser"));
+        log.info("Thread count: " + System.getProperty("threadCount"));
+
+        if (System.getProperty("remote").equals("true")) {
+            Configuration.remote = testConfig.remote();
+        }
+        Configuration.browser = System.getProperty("selenide.browser");
+        Configuration.startMaximized = testConfig.isStartMaximized();
+        Configuration.reportsFolder = testConfig.getReportFolder();
+        Configuration.timeout = testConfig.getTimeout();
+    }
+
     @BeforeClass
-    public void setUp(String isEnableGrid) {
-        Configuration.remote = isEnableGrid.equals("true")
-                ? Constants.GRID_HUB_URL
-                : null;
-        Configuration.browser = "chrome";
-        Configuration.startMaximized = true;
-        Configuration.reportsFolder = "allure-results";
-        Configuration.timeout = 5000;
-
+    public void setUp() {
         open(Constants.TA_DASHBOARD);
     }
 
