@@ -33,7 +33,7 @@ public class BasePage {
             element.click();
         } catch (UIAssertionError e) {
             if (e.getMessage().contains("is not clickable at point")) {
-                log.warn("The element " + element + " is blocked by another element.");
+                log.warn("The element {} is blocked by another element.", element);
             } else {
                 log.error(e.getMessage());
                 return false;
