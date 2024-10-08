@@ -13,12 +13,12 @@ import static com.codeborne.selenide.Selenide.open;
 public class TestBase {
     private final TestConfig testConfig = TestConfig.getInstance();
 
-    @BeforeSuite
+    @BeforeSuite(alwaysRun = true)
     public void beforeTestSuite() {
-        log.info("Retry time : " + System.getProperty("maxRetryCount"));
-        log.info("Grid: " + System.getProperty("remote"));
-        log.info("Browser: " + System.getProperty("selenide.browser"));
-        log.info("Thread count: " + System.getProperty("threadCount"));
+        log.info("Max retry time : {}", System.getProperty("maxRetryCount"));
+        log.info("Grid: {}", System.getProperty("remote"));
+        log.info("Browser: {}", System.getProperty("selenide.browser"));
+        log.info("Thread count: {}", System.getProperty("threadCount"));
 
         if (System.getProperty("remote").equals("true")) {
             Configuration.remote = testConfig.remote();
@@ -29,12 +29,12 @@ public class TestBase {
         Configuration.timeout = testConfig.getTimeout();
     }
 
-    @BeforeClass
+    @BeforeClass(alwaysRun = true)
     public void setUp() {
         open(Constants.TA_DASHBOARD);
     }
 
-    @AfterClass
+    @AfterClass(alwaysRun = true)
     public void tearDown() {
         closeWebDriver();
     }

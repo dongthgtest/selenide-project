@@ -134,7 +134,7 @@ public class DashBoardPage extends BasePage {
         dataProfileButton.click();
     }
 
-    public void isAllOtherElementBlockedOrLocked(String expectedUrl) {
+    public void shouldAllOtherElementBlockedOrLocked(String expectedUrl) {
         List<String> errorMessages = getErrorMessages(expectedUrl);
         Assert.assertTrue(errorMessages.isEmpty(), errorMessages.toString());
     }

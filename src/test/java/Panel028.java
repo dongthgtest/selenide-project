@@ -20,6 +20,6 @@ public class Panel028 extends TestBase {
         String currentUrl = WebDriverRunner.getWebDriver().getCurrentUrl();
 
         panelManagerPage.shouldAddNewButtonBlocked();
-        dashBoardPage.isAllOtherElementBlockedOrLocked(currentUrl);
+        dashBoardPage.shouldAllOtherElementBlockedOrLocked(currentUrl);
     }
 }
