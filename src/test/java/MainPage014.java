@@ -1,11 +1,13 @@
 import com.agest.model.Page;
 import com.agest.model.User;
-import com.agest.page.DashBoardPage;
-import com.agest.page.LoginPage;
-import com.agest.page.NewPage;
+import com.agest.page.ta.DashBoardPage;
+import com.agest.page.ta.LoginPage;
+import com.agest.page.ta.NewPage;
 import com.agest.utils.Constants;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.Test;
+
+import static com.codeborne.selenide.Selenide.open;
 
 public class MainPage014 extends TestBase {
     private final User firstUser = User.getUser1();
@@ -28,6 +30,7 @@ public class MainPage014 extends TestBase {
 
     @Test(description = "Verify that 'Public' pages can be visible and accessed by all users of working repository")
     public void testPagesCanBeUseForAllUsersOfWorkingRepository() {
+        open(Constants.TA_DASHBOARD);
         loginPage.login(firstUser, Constants.TEST_REPO);
         dashBoardPage.shouldUserLoginSuccessful(firstUser);
 

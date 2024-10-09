@@ -1,13 +1,15 @@
 import com.agest.model.User;
-import com.agest.page.DashBoardPage;
-import com.agest.page.DataProfilePage;
-import com.agest.page.LoginPage;
+import com.agest.page.ta.DashBoardPage;
+import com.agest.page.ta.DataProfilePage;
+import com.agest.page.ta.LoginPage;
 import com.agest.utils.Constants;
 import com.agest.utils.JsonUtils;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import java.util.List;
+
+import static com.codeborne.selenide.Selenide.open;
 
 public class DataProfile065 extends TestBase {
     private final User user = User.getUser2();
@@ -18,6 +20,7 @@ public class DataProfile065 extends TestBase {
 
     @Test(description = "Verify that all Pre-set Data Profiles are populated correctly")
     public void verifyPresetDataProfilesArePopulatedCorrectly() {
+        open(Constants.TA_DASHBOARD);
         loginPage.login(user, Constants.TEST_REPO);
         dashBoardPage.openDataProfiles();
         List<String> actualDataProfiles = dataProfilePage.getDataProfiles();

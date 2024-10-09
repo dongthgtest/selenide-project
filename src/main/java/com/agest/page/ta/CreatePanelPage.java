@@ -1,4 +1,4 @@
-package com.agest.page;
+package com.agest.page.ta;
 
 import com.agest.model.Panel;
 import com.agest.model.Series;

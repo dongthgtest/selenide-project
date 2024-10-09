@@ -1,11 +1,14 @@
 import com.agest.model.*;
-import com.agest.page.*;
+import com.agest.page.ta.*;
+import com.agest.utils.Constants;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
 import java.util.Collections;
 import java.util.List;
+
+import static com.codeborne.selenide.Selenide.open;
 
 public class Panel027 extends TestBase {
     private final User adminUser = User.getAdminUser();
@@ -31,6 +34,7 @@ public class Panel027 extends TestBase {
 
     @Test(description = "Verify that when 'Choose panels' form is expanded all pre-set panels are populated and sorted correctly")
     public void testPagesCanBeUseForAllUsersOfWorkingRepository() {
+        open(Constants.TA_DASHBOARD);
         loginPage.login(adminUser);
         dashBoardPage.shouldUserLoginSuccessful(adminUser);
 

@@ -1,9 +1,12 @@
 import com.agest.model.User;
-import com.agest.page.DashBoardPage;
-import com.agest.page.LoginPage;
-import com.agest.page.PanelManagerPage;
+import com.agest.page.ta.DashBoardPage;
+import com.agest.page.ta.LoginPage;
+import com.agest.page.ta.PanelManagerPage;
+import com.agest.utils.Constants;
 import com.codeborne.selenide.WebDriverRunner;
 import org.testng.annotations.Test;
+
+import static com.codeborne.selenide.Selenide.open;
 
 public class Panel028 extends TestBase {
     private final User adminUser = User.getAdminUser();
@@ -13,6 +16,7 @@ public class Panel028 extends TestBase {
 
     @Test(description = "Verify that when 'Choose panels' form is expanded all pre-set panels are populated and sorted correctly")
     public void testPagesCanBeUseForAllUsersOfWorkingRepository() {
+        open(Constants.TA_DASHBOARD);
         loginPage.login(adminUser);
         dashBoardPage.shouldUserLoginSuccessful(adminUser);
         dashBoardPage.openPanelManager();
