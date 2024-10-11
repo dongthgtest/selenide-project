@@ -2,6 +2,7 @@ package com.agest.page.tiki;
 
 import com.agest.utils.Actions;
 import com.agest.utils.Constants;
+import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
 
 import java.util.ArrayList;
@@ -33,5 +34,9 @@ public class BasePage {
             closeAdsButton.click();
             closeAdsButton.shouldNot(visible);
         }
+    }
+
+    public void waitForPageLoad() {
+        Selenide.sleep(3000);
     }
 }

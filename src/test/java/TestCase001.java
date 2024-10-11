@@ -38,7 +38,8 @@ public class TestCase001 extends TestBase {
         filterModalPage.enterPriceRange(startPrice, endPrice);
         filterModalPage.clickFindResult();
 
-        viewProductPage.shouldViewProductPageDisplayed(LeftMenuItem.NHA_SACH_TIKI);
+        viewProductPage.shouldFilterAllDialogDisappear();
+        viewProductPage.shouldFilterHighlighted(filterType, filterOption);
         viewProductPage.shouldPriceOfAllDisplayedItemsWithinRange(startPrice, endPrice);
     }
 }

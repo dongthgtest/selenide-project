@@ -9,8 +9,7 @@ import org.testng.Assert;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.codeborne.selenide.Condition.enabled;
-import static com.codeborne.selenide.Condition.visible;
+import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.$$;
 import static com.codeborne.selenide.Selenide.$x;
 
@@ -42,7 +41,6 @@ public class ViewProductPage extends BasePage {
     @Step("Click filter all")
     public void clickFilterAll() {
         SelenideElement filterAll = $x("//button[img[@alt='filters']]");
-        filterAll.scrollTo();
         filterAll.click();
     }
 
@@ -51,8 +49,13 @@ public class ViewProductPage extends BasePage {
         $x("//div[contains(@class,'Modal')]//div[@class='title']").should(visible, Constants.DISPLAY_TIMEOUT);
     }
 
+    public void shouldFilterAllDialogDisappear() {
+        $x("//div[contains(@class,'Modal')]//div[@class='title']").should(disappear, Constants.DISPLAY_TIMEOUT);
+    }
+
     @Step("Get the price of all displayed items")
     public void shouldPriceOfAllDisplayedItemsWithinRange(String startPrice, String endPrice) {
+        waitForPageLoad();
         int start = Integer.parseInt(startPrice);
         int end = Integer.parseInt(endPrice);
         List<SelenideElement> displayedItems = $$(".price-discount__price");
@@ -72,5 +75,14 @@ public class ViewProductPage extends BasePage {
         });
         Assert.assertTrue(outOfRangePrices.isEmpty(),
                 "Item prices out of range: " + outOfRangePrices);
+    }
+
+    public void shouldFilterHighlighted(String filterType, String filter) {
+        waitForPageLoad();
+        String dynamicFilter = "//div[text()='%s']/following-sibling::div//div[text()='%s']";
+        SelenideElement highlightedFilter = $x(String.format(dynamicFilter, filterType, filter));
+        highlightedFilter.scrollTo();
+        String actualColor = highlightedFilter.getCssValue("color");
+        Assert.assertEquals(actualColor, Constants.HIGHLIGHT_COLOR, "Filter is not highlighted");
     }
 }

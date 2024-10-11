@@ -15,5 +15,7 @@ public class Constants {
     // Relative path
     public static final String PRESET_DATA_PROFILES = "src/test/resources/test_data/dataProfiles.json";
 
+    public static final String HIGHLIGHT_COLOR = "rgba(10, 104, 255, 1)";
+
     public static final String TEST_REPO = "Test";
 }
