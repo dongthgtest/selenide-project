@@ -1,4 +1,4 @@
-package com.agest.model;
+package com.agest.model.sele2;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

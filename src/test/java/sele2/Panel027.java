@@ -1,4 +1,6 @@
-import com.agest.model.*;
+package sele2;
+
+import com.agest.model.sele2.*;
 import com.agest.page.*;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.Test;

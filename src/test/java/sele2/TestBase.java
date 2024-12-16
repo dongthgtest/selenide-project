@@ -1,3 +1,5 @@
+package sele2;
+
 import com.agest.config.TestConfig;
 import com.agest.utils.Constants;
 import com.codeborne.selenide.Configuration;
