@@ -6,14 +6,14 @@
     </listeners>
     <test name="Selenide test">
         <classes>
-            <class name="Login001"/>
-            <class name="Login002"/>
-            <class name="MainPage014"/>
-            <class name="MainPage017"/>
-            <class name="Panel027"/>
-            <class name="Panel028"/>
-            <class name="DataProfile065"/>
-            <class name="DataProfile067"/>
+            <class name="sele2.Login001"/>
+            <class name="sele2.Login002"/>
+            <class name="sele2.MainPage014"/>
+            <class name="sele2.MainPage017"/>
+            <class name="sele2.Panel027"/>
+            <class name="sele2.Panel028"/>
+            <class name="sele2.DataProfile065"/>
+            <class name="sele2.DataProfile067"/>
         </classes>
     </test>
 </suite>

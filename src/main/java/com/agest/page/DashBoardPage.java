@@ -1,8 +1,8 @@
 package com.agest.page;
 
-import com.agest.model.GlobalSetting;
-import com.agest.model.Page;
-import com.agest.model.User;
+import com.agest.model.sele2.GlobalSetting;
+import com.agest.model.sele2.Page;
+import com.agest.model.sele2.User;
 import com.agest.utils.AlertUtils;
 import com.agest.utils.Constants;
 import com.codeborne.selenide.SelenideElement;

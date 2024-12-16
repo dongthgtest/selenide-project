@@ -1,6 +1,8 @@
-import com.agest.model.AlertMessages;
-import com.agest.model.Page;
-import com.agest.model.User;
+package sele2;
+
+import com.agest.model.sele2.AlertMessages;
+import com.agest.model.sele2.Page;
+import com.agest.model.sele2.User;
 import com.agest.page.DashBoardPage;
 import com.agest.page.LoginPage;
 import com.agest.page.NewPage;
