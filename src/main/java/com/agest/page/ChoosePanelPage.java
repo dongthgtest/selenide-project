@@ -1,7 +1,7 @@
 package com.agest.page;
 
-import com.agest.model.Panel;
-import com.agest.model.PanelType;
+import com.agest.model.sele2.Panel;
+import com.agest.model.sele2.PanelType;
 import com.agest.utils.Constants;
 import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;

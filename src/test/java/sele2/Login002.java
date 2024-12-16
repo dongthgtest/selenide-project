@@ -1,6 +1,8 @@
+package sele2;
+
 import com.agest.listener.RetryAnalyzer;
-import com.agest.model.AlertMessages;
-import com.agest.model.User;
+import com.agest.model.sele2.AlertMessages;
+import com.agest.model.sele2.User;
 import com.agest.page.LoginPage;
 import com.agest.utils.AlertUtils;
 import org.testng.Assert;

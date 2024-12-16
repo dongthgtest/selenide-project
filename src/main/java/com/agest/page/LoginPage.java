@@ -1,6 +1,6 @@
 package com.agest.page;
 
-import com.agest.model.User;
+import com.agest.model.sele2.User;
 import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
 

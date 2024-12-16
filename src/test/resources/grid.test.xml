@@ -6,15 +6,15 @@
     </listeners>
     <test name="node 1">
         <classes>
-            <class name="Login002"/>
-            <class name="MainPage017"/>
+            <class name="sele2.Login002"/>
+            <class name="sele2.MainPage017"/>
         </classes>
     </test>
     <test name="node 2">
         <classes>
-            <class name="Login001"/>
-            <class name="MainPage014"/>
-            <class name="Panel027"/>
+            <class name="sele2.Login001"/>
+            <class name="sele2.MainPage014"/>
+            <class name="sele2.Panel027"/>
 
         </classes>
     </test>

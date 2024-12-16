@@ -1,6 +1,6 @@
 package com.agest.page;
 
-import com.agest.model.DataProfileTableHeader;
+import com.agest.model.sele2.DataProfileTableHeader;
 import com.codeborne.selenide.SelenideElement;
 
 import java.util.ArrayList;

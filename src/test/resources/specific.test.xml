@@ -6,9 +6,9 @@
     </listeners>
     <test name="Selenide test">
         <classes>
-            <class name="Login001"/>
-            <class name="Login002"/>
-            <class name="MainPage014"/>
+            <class name="sele2.Login001"/>
+            <class name="sele2.Login002"/>
+            <class name="sele2.MainPage014"/>
         </classes>
     </test>
 </suite>
