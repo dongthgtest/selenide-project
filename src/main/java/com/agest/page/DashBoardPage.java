@@ -5,6 +5,7 @@ import com.agest.model.sele2.Page;
 import com.agest.model.sele2.User;
 import com.agest.utils.AlertUtils;
 import com.agest.utils.Constants;
+import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import com.codeborne.selenide.WebDriverRunner;
 import io.qameta.allure.Step;
@@ -142,13 +143,13 @@ public class DashBoardPage extends BasePage {
     @Step("Verify all other elements are blocked/locked")
     private List<String> getErrorMessages(String expectedUrl) {
         List<String> errorMessages = new ArrayList<>();
-        List<SelenideElement> menuElements = $$x("//div[@id='main-menu']//li/a");
+        ElementsCollection menuElements = $$x("//div[@id='main-menu']//li/a");
         menuElements.forEach(element -> {
             if (!isElementsBlocked(element)) {
                 errorMessages.add("This element is not blocked: " + element);
             }
         });
-        List<SelenideElement> headerElements = $$x("//ul[@class='head-menu']//li/a");
+        ElementsCollection headerElements = $$x("//ul[@class='head-menu']//li/a");
         headerElements.forEach(element -> {
             if (!isElementLocked(element, expectedUrl)) {
                 errorMessages.add("This element is not locked: " + element);

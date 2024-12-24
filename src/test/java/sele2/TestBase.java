@@ -26,7 +26,6 @@ public class TestBase {
             Configuration.remote = testConfig.remote();
         }
         Configuration.browser = testConfig.getBrowser();
-        Configuration.startMaximized = testConfig.isStartMaximized();
         Configuration.reportsFolder = testConfig.getReportFolder();
         Configuration.timeout = testConfig.getTimeout();
     }

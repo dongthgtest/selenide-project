@@ -12,6 +12,7 @@ import static com.codeborne.selenide.Selenide.closeWebDriver;
 @Slf4j
 public class TestBase {
     private final TestConfig testConfig = TestConfig.getInstance();
+    protected final String language = System.getProperty("language", "vi");
 
     @BeforeSuite(alwaysRun = true)
     public void beforeTestSuite() {
@@ -19,12 +20,12 @@ public class TestBase {
         log.info("Grid: {}", System.getProperty("remote"));
         log.info("Browser: {}", System.getProperty("selenide.browser"));
         log.info("Thread count: {}", System.getProperty("threadCount"));
+        log.info("Language: {}", System.getProperty("language"));
 
         if (System.getProperty("remote").equals("true")) {
             Configuration.remote = testConfig.remote();
         }
         Configuration.browser = testConfig.getBrowser();
-        Configuration.startMaximized = testConfig.isStartMaximized();
         Configuration.reportsFolder = testConfig.getReportFolder();
         Configuration.timeout = testConfig.getTimeout();
     }
