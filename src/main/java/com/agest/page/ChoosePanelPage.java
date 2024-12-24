@@ -3,6 +3,7 @@ package com.agest.page;
 import com.agest.model.sele2.Panel;
 import com.agest.model.sele2.PanelType;
 import com.agest.utils.Constants;
+import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
 
@@ -21,14 +22,14 @@ public class ChoosePanelPage extends DashBoardPage {
         hideButton.shouldBe(visible, Constants.SHORT_WAIT);
     }
 
-    private List<SelenideElement> getTableItems(String tableName) {
+    private ElementsCollection getTableItems(String tableName) {
         String dynamicTableItem = "//div[@class='pitem']/div[text()='%s']/following-sibling::table//li/a";
         return $$x(String.format(dynamicTableItem, tableName));
     }
 
     @Step("Get list panels of {panelType}")
     private List<Panel> getPanelsByType(PanelType panelType) {
-        List<SelenideElement> items = getTableItems(panelType.getName());
+        ElementsCollection items = getTableItems(panelType.getName());
         return items.stream().map(item -> new Panel(item.getText()
                         .replace(" ", " ")))
                 .collect(Collectors.toList());
