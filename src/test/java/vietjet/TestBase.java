@@ -12,7 +12,7 @@ import static com.codeborne.selenide.Selenide.closeWebDriver;
 @Slf4j
 public class TestBase {
     private final TestConfig testConfig = TestConfig.getInstance();
-    protected final String language = System.getProperty("language", "vi");
+    protected final String language = System.getProperty("language", "en");
 
     @BeforeSuite(alwaysRun = true)
     public void beforeTestSuite() {
@@ -32,7 +32,6 @@ public class TestBase {
 
     @BeforeClass(alwaysRun = true)
     public void setUp() {
-//        open(Constants.VIETJET_URL);
     }
 
     @AfterClass(alwaysRun = true)

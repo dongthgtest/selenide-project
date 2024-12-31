@@ -16,7 +16,7 @@ public class HomePage {
     private final String dynamicLocation = "//div[@id='panel1a-content']//div[text()='%s']";
 
     public HomePage(String languageCode) {
-        this.language = new LanguageUtils("homePage", languageCode);
+        this.language = new LanguageUtils(languageCode);
     }
 
     public void acceptCookie() {
