@@ -4,9 +4,27 @@ This project is built using Maven and designed to run automated UI tests using [
 includes dependencies for logging, reporting, and test execution with TestNG, Allure, and SLF4J. The project uses Java
 11 and integrates tools like Checkstyle for code quality checks.
 
+## Features and User Cases
+
+| Feature/User Case            | Status |
+|------------------------------|--------|
+| Selenide FW                  | ✔️     |
+| Reports                      | ✔️     |
+| Test retry                   | ✔️     |
+| Parallel/distributed testing | ✔️     |
+| Cross browsers testing       | ✔️     |
+| Selenium Grid/Shard          |        |
+| CI                           |        |
+| Content testing              |        |
+| Multiple languages testing   | ✔️     |
+| Group tests by purposes      |        |
+| Source control practice      | ✔️     |
+| Switch test environment      |        |
+| Wrap custom controls         | ✔️     |
+
 ## Requirements
 
-- **Java 11**: Ensure that you have JDK 11 installed.
+- **Java 17**: Ensure that you have JDK 17+ installed.
 - **Maven**: This project uses Maven for dependency management and build automation.
 
 ## Project Structure
