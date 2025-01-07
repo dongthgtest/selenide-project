@@ -2,7 +2,7 @@
 
 This project is built using Maven and designed to run automated UI tests using [Selenide](https://selenide.org/). It
 includes dependencies for logging, reporting, and test execution with TestNG, Allure, and SLF4J. The project uses Java
-23 and integrates tools like Checkstyle for code quality checks.
+21 and integrates tools like Checkstyle for code quality checks.
 
 ## Features and User Cases
 
