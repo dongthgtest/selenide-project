@@ -2,11 +2,29 @@
 
 This project is built using Maven and designed to run automated UI tests using [Selenide](https://selenide.org/). It
 includes dependencies for logging, reporting, and test execution with TestNG, Allure, and SLF4J. The project uses Java
-11 and integrates tools like Checkstyle for code quality checks.
+21 and integrates tools like Checkstyle for code quality checks.
+
+## Features and User Cases
+
+| Feature/User Case            | Status |
+|------------------------------|--------|
+| Selenide FW                  | ✔️     |
+| Reports                      | ✔️     |
+| Test retry                   | ✔️     |
+| Parallel/distributed testing | ✔️     |
+| Cross browsers testing       | ✔️     |
+| Selenium Grid/Shard          |        |
+| CI                           |        |
+| Content testing              |        |
+| Multiple languages testing   | ✔️     |
+| Group tests by purposes      |        |
+| Source control practice      | ✔️     |
+| Switch test environment      |        |
+| Wrap custom controls         | ✔️     |
 
 ## Requirements
 
-- **Java 11**: Ensure that you have JDK 11 installed.
+- **Java 17**: Ensure that you have JDK 17+ installed.
 - **Maven**: This project uses Maven for dependency management and build automation.
 
 ## Project Structure
@@ -60,41 +78,12 @@ includes dependencies for logging, reporting, and test execution with TestNG, Al
     mvn clean install
     ```
 
-## Install TA to run test with TA Dashboard
-
-Please contact with Agest to get TA installation. <br>
-Once you have TA installed, please import Test repo to Repository Server using Test.dat file
-from`src/test/resources/test_data/Test_2024-09-18_14-22-25.dat`
-
 ## Run Tests
 
 1. **To run all test:**
    ```bash
-      mvn clean test -Dsurefire.suiteXmlFiles=src/test/resources/test.xml
+      mvn clean test
    ```
-2. **To run specific test you can select the test to run in specific.test.xml then run this command:**
-   ```bash
-     mvn clean test -Dsurefire.suiteXmlFiles=src/test/resources/specific.test.xml
-   ```
-3. **To run selenium grid you can config the remote url in Constants.GRID_HUB_URL then enable the remote flag using:**
-   ```bash
-     -Dremote=true
-   ```
-4. **To run parallel enter number of thread-count using:**
-   ```bash
-     -DthreadCount={number-of-thread-count} 
-      example: -DthreadCount=5
-   ```
-5. **To run test with specific browser (default is chrome):**
-    ```bash
-      -Dselenide.browser={browser}
-      example: -Dselenide.browser=edge
-    ```
-
-5. **Example of full maven command with all option**
-    ```bash
-      mvn -Dselenide.browser=edge clean test -Dsurefire.suiteXmlFiles=src/test/resources/grid.test.xml -Dremote=true -DthreadCount=4
-    ```
 
 ## How to get report
 
@@ -115,16 +104,3 @@ allure generate --single-file
 ```
 
 Now you can get html report by open <b>index.html</b> in allure-report folder
-
-## Maven Other Commands
-
-- **Generate project site**:
-    ```bash
-    mvn site
-    ```
-
-- **Check for code style issues**:
-    ```bash
-    mvn checkstyle:check
-    ```
-

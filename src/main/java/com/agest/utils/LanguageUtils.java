@@ -6,9 +6,9 @@ import java.util.ResourceBundle;
 public class LanguageUtils {
     private final ResourceBundle resourceBundle;
 
-    public LanguageUtils(String pageName, String languageCode) {
+    public LanguageUtils(String languageCode) {
         Locale locale = new Locale(languageCode);
-        resourceBundle = ResourceBundle.getBundle(pageName, locale);
+        resourceBundle = ResourceBundle.getBundle(String.valueOf(locale));
     }
 
     public String getMessage(String key) {
