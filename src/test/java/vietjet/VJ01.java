@@ -9,7 +9,7 @@ import org.testng.annotations.Test;
 import static com.codeborne.selenide.Selenide.open;
 
 public class VJ01 extends TestBase {
-    private final HomePage homePage = new HomePage(language);
+    private final HomePage homePage = new HomePage();
 
     @Test(description = "Search and choose tickets on a specific day successfully")
     public void testSearchAndChooseTicketWorkCorrectlyOnSpecificDay() {

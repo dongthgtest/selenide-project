@@ -24,7 +24,7 @@ includes dependencies for logging, reporting, and test execution with TestNG, Al
 
 ## Requirements
 
-- **Java 17**: Ensure that you have JDK 17+ installed.
+- **Java 21**: Ensure that you have JDK 21+ installed.
 - **Maven**: This project uses Maven for dependency management and build automation.
 
 ## Project Structure
@@ -35,25 +35,23 @@ includes dependencies for logging, reporting, and test execution with TestNG, Al
 
 ## Dependencies
 
-- **Selenide** (`5.25.0`): Framework for UI testing.
-- **Lombok** (`1.18.34`): Simplifies Java code by generating boilerplate code such as getters, setters, etc.
-- **SLF4J** (`1.7.30`): Simple Logging Facade for Java.
-- **Allure TestNG** (`2.15.0`): For generating detailed test reports.
-- **TestNG** (`7.7.1`): Testing framework.
-- **WebDriverManager** (`5.9.2`): Manages WebDriver binaries automatically.
-- **HttpClient5** (`5.2.1`): Apache HTTP client for making HTTP requests.
-- **Commons Lang** (`3.12.0`): Utilities for Java's core libraries.
-
-## Plugins
+- **Selenide:** 7.9.3
+- **TestNG:** 7.10.2
+- **Allure TestNG:** 2.15.0
+- **Gson:** 2.8.9
+- **Lombok:** 1.18.34
+- **SLF4J:** 1.7.30
+- **AspectJ Weaver:** 1.9.19
+- **Apache Commons Lang:** 3.12.0
 
 ### Build Plugins
 
 - **Maven Surefire Plugin** (`3.0.0-M7`): Runs unit tests using TestNG.
-    - **AspectJ Weaver** (`1.9.19`): Java agent used for weaving aspects at runtime.
+- **AspectJ Weaver** (`1.9.19`): Java agent used for weaving aspects at runtime.
 
 - **Maven Checkstyle Plugin** (`3.5.0`): Enforces coding standards with Checkstyle.
-    - Configured to fail the build on coding violations.
-    - Uses the configuration file `checkstyle.xml`.
+- Configured to fail the build on coding violations.
+- Uses the configuration file `checkstyle.xml`.
 
 ### Reporting Plugins
 
