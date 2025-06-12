@@ -1,6 +1,6 @@
 package vietjet;
 
-import com.agest.config.TestConfig;
+import com.agest.utils.Constants;
 import com.codeborne.selenide.Configuration;
 import lombok.extern.slf4j.Slf4j;
 import org.testng.annotations.AfterClass;
@@ -11,7 +11,6 @@ import static com.codeborne.selenide.Selenide.closeWebDriver;
 
 @Slf4j
 public class TestBase {
-    private final TestConfig testConfig = TestConfig.getInstance();
     protected final String language = System.getProperty("language", "en");
 
     @BeforeSuite(alwaysRun = true)
@@ -22,16 +21,14 @@ public class TestBase {
         log.info("Thread count: {}", System.getProperty("threadCount"));
         log.info("Language: {}", System.getProperty("language"));
 
-        if (System.getProperty("remote").equals("true")) {
-            Configuration.remote = testConfig.remote();
-        }
-        Configuration.browser = testConfig.getBrowser();
-        Configuration.reportsFolder = testConfig.getReportFolder();
-        Configuration.timeout = testConfig.getTimeout();
+        Configuration.browser = "chrome";
+        Configuration.reportsFolder = "allure-results";
+        Configuration.timeout = 5000;
     }
 
     @BeforeClass(alwaysRun = true)
     public void setUp() {
+        Configuration.baseUrl = Constants.VIET_JET_EN_URL;
     }
 
     @AfterClass(alwaysRun = true)
