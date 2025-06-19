@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
 <suite name="Selenide Test Suite" thread-count="1" parallel="classes">
+    <listeners>
+        <listener class-name="com.agest.listener.AllureTestListener"/>
+    </listeners>
     <test name="Selenide test">
         <classes>
-            <class name="vietjet.VJ01"/>
+            <class name="agoda.Agoda01"/>
         </classes>
     </test>
 </suite>
