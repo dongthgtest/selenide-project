@@ -11,16 +11,16 @@ includes dependencies for logging, reporting, and test execution with TestNG, Al
 | Selenide FW                  | ✔️     |
 | Reports                      | ✔️     |
 | Test retry                   | ✔️     |
-| Parallel/distributed testing | ✔️     |
+| Parallel/distributed testing |        |
 | Cross browsers testing       | ✔️     |
 | Selenium Grid/Shard          |        |
 | CI                           |        |
 | Content testing              |        |
-| Multiple languages testing   | ✔️     |
+| Multiple languages testing   |        |
 | Group tests by purposes      |        |
 | Source control practice      | ✔️     |
 | Switch test environment      |        |
-| Wrap custom controls         | ✔️     |
+| Wrap custom controls         |        |
 
 ## Requirements
 

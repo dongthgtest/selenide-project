@@ -4,8 +4,8 @@ import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.logevents.SelenideLogger;
 import io.qameta.allure.selenide.AllureSelenide;
 import lombok.extern.slf4j.Slf4j;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeSuite;
-import org.testng.annotations.BeforeTest;
 
 import static com.codeborne.selenide.Selenide.open;
 
@@ -13,19 +13,6 @@ import static com.codeborne.selenide.Selenide.open;
 public class TestBase {
     @BeforeSuite(alwaysRun = true)
     public void beforeTestSuite() {
-        log.info("Max retry time : {}", System.getProperty("maxRetryCount"));
-        log.info("Grid: {}", System.getProperty("remote"));
-        log.info("Browser: {}", System.getProperty("selenide.browser"));
-        log.info("Thread count: {}", System.getProperty("threadCount"));
-        log.info("Language: {}", System.getProperty("language"));
-
-        Configuration.browser = System.getProperty("selenide.browser", "chrome");
-        Configuration.reportsFolder = System.getProperty("selenide.reportsFolder", "allure-results");
-        Configuration.timeout = Long.parseLong(System.getProperty("selenide.timeout", "5000"));
-        Configuration.baseUrl = System.getProperty("selenide.baseUrl", "https://agoda.com");
-        Configuration.remote = System.getProperty("remote", null);
-        Configuration.browserSize = System.getProperty("selenide.browserSize", "1920x1080");
-
         SelenideLogger.addListener("AllureSelenide",
                 new AllureSelenide()
                         .screenshots(true)
@@ -33,7 +20,7 @@ public class TestBase {
         );
     }
 
-    @BeforeTest(alwaysRun = true)
+    @BeforeClass(alwaysRun = true)
     public void setUp() {
         open(Configuration.baseUrl);
     }

@@ -2,6 +2,7 @@ package agoda;
 
 import com.agest.page.agoda.HomePage;
 import org.testng.annotations.Test;
+import utils.DateUtils;
 
 import java.time.LocalDate;
 
@@ -12,7 +13,11 @@ public class Agoda01 extends TestBase {
     public void test01() {
         homePage.selectLanguage("English");
         homePage.searchAndSelectLocation("Ho Chi Minh");
-        homePage.findAndSelectCheckInDate(LocalDate.parse("2026-01-01"));
-        homePage.findAndSelectCheckOutDate(LocalDate.parse("2026-01-10"));
+        LocalDate checkInDate = DateUtils.getNextFriday();
+        LocalDate checkOutDate = checkInDate.plusDays(3);
+        homePage.findAndSelectDate(checkInDate);
+        homePage.findAndSelectDate(checkOutDate);
+        homePage.selectRoomQuantity(2);
+        homePage.selectAdultQuantity(4);
     }
 }
