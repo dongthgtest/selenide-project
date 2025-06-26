@@ -1,6 +1,8 @@
 package agoda;
 
 import com.codeborne.selenide.Configuration;
+import com.codeborne.selenide.logevents.SelenideLogger;
+import io.qameta.allure.selenide.AllureSelenide;
 import lombok.extern.slf4j.Slf4j;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.BeforeTest;
@@ -23,6 +25,12 @@ public class TestBase {
         Configuration.baseUrl = System.getProperty("selenide.baseUrl", "https://agoda.com");
         Configuration.remote = System.getProperty("remote", null);
         Configuration.browserSize = System.getProperty("selenide.browserSize", "1920x1080");
+
+        SelenideLogger.addListener("AllureSelenide",
+                new AllureSelenide()
+                        .screenshots(true)
+                        .savePageSource(true)
+        );
     }
 
     @BeforeTest(alwaysRun = true)

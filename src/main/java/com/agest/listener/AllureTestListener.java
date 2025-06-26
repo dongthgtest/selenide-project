@@ -1,35 +1,42 @@
 package com.agest.listener;
 
-import com.codeborne.selenide.Selenide;
+import com.codeborne.selenide.WebDriverRunner;
+import com.codeborne.selenide.logevents.LogEvent;
+import com.codeborne.selenide.logevents.SelenideLogger;
 import io.qameta.allure.Allure;
-import io.qameta.allure.listener.TestLifecycleListener;
-import io.qameta.allure.model.Status;
-import io.qameta.allure.model.TestResult;
+import io.qameta.allure.selenide.AllureSelenide;
 import org.openqa.selenium.OutputType;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.openqa.selenium.TakesScreenshot;
+import org.testng.ITestListener;
+import org.testng.ITestResult;
 
 import java.io.ByteArrayInputStream;
-import java.util.UUID;
 
-public class AllureTestListener implements TestLifecycleListener {
-    private static final Logger logger = LoggerFactory.getLogger(AllureTestListener.class);
+public class AllureTestListener extends AllureSelenide implements ITestListener {
+    public AllureTestListener() {
+        SelenideLogger.addListener("AllureSelenide", this);
+    }
 
     @Override
-    public void beforeTestStop(TestResult result) {
-        if (result.getStatus() != null &&
-                (result.getStatus().equals(Status.BROKEN) || result.getStatus().equals(Status.FAILED))) {
-            logger.info("Test case \"{}\" has been \"{}\". Take a screenshot", result.getFullName(),
-                    result.getStatus().value());
-            try {
-                byte[] buf = Selenide.screenshot(OutputType.BYTES);
-                if (buf != null) {
-                    ByteArrayInputStream input = new ByteArrayInputStream(buf);
-                    Allure.attachment(UUID.randomUUID().toString(), input);
-                }
-            } catch (Exception e) {
-                logger.error("An error occurs when adding screenshot to report: \n{}", e.getMessage());
-            }
+    public void afterEvent(LogEvent event) {
+        if (event.getStatus().equals(LogEvent.EventStatus.FAIL)) {
+            Allure.addAttachment(
+                    "Screenshot on failure",
+                    new ByteArrayInputStream(((TakesScreenshot) WebDriverRunner.getWebDriver())
+                            .getScreenshotAs(OutputType.BYTES))
+            );
+        }
+        super.afterEvent(event);
+    }
+
+    @Override
+    public void onTestFailure(ITestResult result) {
+        if (WebDriverRunner.hasWebDriverStarted()) {
+            Allure.addAttachment(
+                    "Screenshot on test failure",
+                    new ByteArrayInputStream(((TakesScreenshot) WebDriverRunner.getWebDriver())
+                            .getScreenshotAs(OutputType.BYTES))
+            );
         }
     }
 }
