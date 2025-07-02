@@ -6,7 +6,7 @@ on:
     - cron: '30 8 * * *'
 
 jobs:
-  run-agoda01-test:
+  run-test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -15,6 +15,14 @@ jobs:
         with:
           java-version: '21'
           distribution: 'temurin'
+
+      - name: Cache Maven packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
 
       - name: Run Agoda01 Test
         run: |
@@ -26,15 +34,17 @@ jobs:
 
       - name: Generate Allure Report
         run: mvn allure:report
+        if: always()
 
       - name: Archive Allure Report
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: allure-report
           path: target/site/allure-maven-plugin
 
   send-allure-report:
-    needs: run-agoda01-test
+    needs: run-test
     runs-on: ubuntu-latest
     env:
       EMAIL_TO: dongtran5295@gmail.com
@@ -45,6 +55,7 @@ jobs:
           path: allure-report
 
       - name: Send Allure Report via Email
+        if: always()
         uses: dawidd6/action-send-mail@v3
         with:
           server_address: smtp.sendgrid.net
