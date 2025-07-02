@@ -17,8 +17,8 @@ public class BasePage {
     private final SelenideElement searchInput = $("#textInput");
     private final SelenideElement nextMonthButton = $("[data-selenium='calendar-next-month-button']");
     private final SelenideElement prevMonthButton = $("[data-selenium='calendar-previous-month-button']");
-    private final String dynamicButton = "//div[@data-selenium='%s']/button[@data-selenium='%s']";
-    private final String dynamicCurrentQuantity = "//div[contains(@data-component,'%s')]/p";
+    private final String dynamicButton = "//button[@data-element-name='%s' and @data-selenium='%s']";
+    private final String dynamicCurrentQuantity = "//div[contains(@data-selenium,'%s')]/p";
 
     @Step("Select language: {language}")
     public void selectLanguage(String language) {
@@ -70,14 +70,14 @@ public class BasePage {
 
     @Step("Select room quantity: {roomCount}")
     public void selectRoomQuantity(int roomCount) {
-        this.selectQuantity(roomCount, "occupancyRooms", "occ-room-value");
+        this.selectQuantity(roomCount, "occupancy-selector-panel-rooms", "occ-room-value");
     }
 
     @Step("Select adult quantity: {adultCount}")
     public void selectAdultQuantity(int adultCount) {
-        this.selectQuantity(adultCount, "occupancyAdults", "occ-adult-value");
+        this.selectQuantity(adultCount, "occupancy-selector-panel-adult", "occ-adult-value");
     }
-    
+
     private void selectQuantity(int roomCount, String option, String currentOption) {
         SelenideElement minusButton = $x(String.format(dynamicButton, option, "minus"));
         SelenideElement plusButton = $x(String.format(dynamicButton, option, "plus"));
