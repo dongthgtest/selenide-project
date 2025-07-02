@@ -21,7 +21,7 @@ jobs:
           mvn -Dselenide.baseUrl=https://www.agoda.com \
               -Dselenide.browser=chrome \
               -Dselenide.headless=true \
-              -Dsurefire.suiteXmlFiles=src/test/resources/specific.test.xm \
+              -Dsurefire.suiteXmlFiles=src/test/resources/specific.test.xml \
               clean test
 
       - name: Generate Allure Report
