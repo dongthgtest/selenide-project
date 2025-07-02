@@ -4,23 +4,30 @@ This project is built using Maven and designed to run automated UI tests using [
 includes dependencies for logging, reporting, and test execution with TestNG, Allure, and SLF4J. The project uses Java
 21 and integrates tools like Checkstyle for code quality checks.
 
-## Features and User Cases
+### Outcomes
 
-| Feature/User Case            | Status |
-|------------------------------|--------|
-| Selenide FW                  | ✔️     |
-| Reports                      | ✔️     |
-| Test retry                   | ✔️     |
-| Parallel/distributed testing |        |
-| Cross browsers testing       | ✔️     |
-| Selenium Grid/Shard          |        |
-| CI                           |        |
-| Content testing              |        |
-| Multiple languages testing   |        |
-| Group tests by purposes      |        |
-| Source control practice      | ✔️     |
-| Switch test environment      |        |
-| Wrap custom controls         |        |
+- [x] Selenide FW ([selenide.org](https://selenide.org/)): automation/test framework
+- [x] Reports: HTML, Allure Report, Report Portal
+- [x] Test retry: test failed ⇒ retry (1, 2)
+- [x] Parallel/distributed testing
+- [x] Cross browsers testing: Chrome, Edge
+- [x] Selenium Grid/Shard
+- [ ] Test cases: VJ, Agoda, TBD (5/8 - 3 Agoda tests, a Shadow DOM test, and 1 VJ test)
+- [ ] CI: Schedule test, send email notification result with summary
+
+### User Cases
+
+- [ ] Content testing
+- [ ] Multiple languages testing
+- [x] Group tests by purposes: regression, smoke/sanity test
+- [x] Source control practice: branch
+- [ ] Switch test environment: dev, stg (dev: agoda.com, stg: vj.com)
+- [ ] Wrap custom controls
+- [ ] Data driven testing: test data is in excel file
+- [ ] Working with Shadow DOM
+- [ ] Compare with another FW e.g. Playwright
+
+---
 
 ## Requirements
 
