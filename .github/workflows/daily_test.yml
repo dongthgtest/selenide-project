@@ -1,0 +1,70 @@
+name: Daily Test
+
+on:
+  push:
+  schedule:
+    - cron: '30 8 * * *'
+
+jobs:
+  run-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+
+      - name: Cache Maven dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.m2/repository
+          key: maven-${{ runner.os }}-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            maven-${{ runner.os }}-
+
+      - name: Run Maven tests
+        run: |
+          mvn clean test \ 
+          -DsuiteXmlFile=src/test/resources/specific.test.xml \ 
+          -Dselenide.baseUrl=https://agoda.com
+
+      - name: Upload Allure Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-report
+          path: target/allure-results
+
+      - name: Generate Allure HTML Report
+        if: always()
+        run: mvn allure:report
+
+      - name: Read Allure HTML for Email
+        id: allure_report_html
+        if: always()
+        run: |
+          echo "content<<EOF" >> $GITHUB_OUTPUT
+          cat target/site/allure-maven-plugin/index.html >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Send Allure Report via Email
+        if: always()
+        uses: dawidd6/action-send-mail@v6
+        env:
+          RECIPIENT_EMAIL: ${{ secrets.RECIPIENT_EMAIL }}
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          username: ${{ secrets.EMAIL_USERNAME }}
+          password: ${{ secrets.EMAIL_PASSWORD }}
+          subject: "Allure Test Report"
+          to: ${{ env.RECIPIENT_EMAIL }}
+          from: noreply-automation@dongthgtest.com
+          content_type: text/html
+          body: ${{ steps.allure_report_html.outputs.content }}
+          attachments: target/site/allure-maven-plugin/index.html

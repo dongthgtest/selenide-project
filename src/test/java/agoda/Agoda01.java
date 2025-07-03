@@ -2,11 +2,14 @@ package agoda;
 
 import com.agest.page.agoda.HomePage;
 import com.agest.page.agoda.SearchResultPage;
+import com.codeborne.selenide.Configuration;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import utils.DateUtils;
 
 import java.time.LocalDate;
+
+import static com.codeborne.selenide.Selenide.open;
 
 public class Agoda01 extends TestBase {
     private final HomePage homePage = new HomePage();

@@ -5,8 +5,8 @@
         <listener class-name="com.agest.listener.AllureTestListener"/>
     </listeners>
     <test name="Selenide test">
-        <classes>
-            <class name="agoda.Agoda01"/>
-        </classes>
+        <packages>
+            <package name="agoda"/>
+        </packages>
     </test>
 </suite>
