@@ -18,7 +18,7 @@ public class SearchResultPage {
     public void shouldSearchResultDisplayed(int expectedHotelsFound, String destination) {
         ElementsCollection hotelList = getHotelList();
         hotelList.shouldHave(sizeGreaterThan(expectedHotelsFound));
-        for (int i = 0; i < Math.min(expectedHotelsFound, hotelList.size()); i++) {
+        for (int i = 0; i < expectedHotelsFound; i++) {
             SelenideElement hotel = getHotelList().get(i); // re-fetch each time
             hotel.$("div[data-selenium='area-city'] span")
                     .scrollIntoView("{block: 'center'}")
@@ -40,7 +40,7 @@ public class SearchResultPage {
         List<Integer> prices = new ArrayList<>();
         ElementsCollection hotelList = getHotelList();
         int index = 0;
-        while (prices.size() < expectedHotels  && index < hotelList.size()) {
+        while (prices.size() < expectedHotels && index < hotelList.size()) {
             SelenideElement hotel = hotelList.get(index);
             hotel.scrollIntoView("{block: 'center'}");
             Optional<Integer> price = getHotelPriceIfPresent(hotel);
@@ -48,7 +48,7 @@ public class SearchResultPage {
             index++;
         }
         if (prices.size() < expectedHotels) {
-            throw new AssertionError("Could not find 5 hotel prices. Only found: " + prices.size() + " prices: " + prices);
+            throw new AssertionError("Could not find " + expectedHotels + " hotel prices. Only found: " + prices.size() + " prices: " + prices);
         }
         for (int i = 0; i < prices.size() - 1; i++) {
             if (prices.get(i) > prices.get(i + 1)) {

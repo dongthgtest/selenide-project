@@ -9,6 +9,7 @@ import utils.DateUtils;
 import java.time.LocalDate;
 
 public class Agoda01 extends TestBase {
+    private SearchResultPage searchResultPage;
     private final HomePage homePage = new HomePage();
 
     private String destination;
@@ -30,13 +31,9 @@ public class Agoda01 extends TestBase {
 
     @Test
     public void verifySearchAndSortHotelSuccessfully() {
-        homePage.searchAndSelectLocation(destination);
-        homePage.findAndSelectDate(checkInDate);
-        homePage.findAndSelectDate(checkOutDate);
-        homePage.selectRoomQuantity(targetRooms);
-        homePage.selectAdultQuantity(targetAdults);
+        homePage.searchHotel(destination, checkInDate, checkOutDate, targetRooms, targetAdults);
 
-        SearchResultPage searchResultPage = homePage.clickSearchButton();
+        searchResultPage = homePage.clickSearchButton();
         searchResultPage.shouldSearchResultDisplayed(expectedHotelsFound, destination);
 
         searchResultPage.sortByLowestPrice();

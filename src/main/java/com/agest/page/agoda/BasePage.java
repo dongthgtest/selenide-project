@@ -13,6 +13,7 @@ import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.*;
 
 public class BasePage {
+    private final SelenideElement selectedDay = $$x("//div[@aria-selected='true']//span").first();
     private final SelenideElement selectedLanguageContainer = $("[data-selenium='language-container-selected-language']");
     private final SelenideElement searchInput = $("#textInput");
     private final SelenideElement nextMonthButton = $("[data-selenium='calendar-next-month-button']");
@@ -27,6 +28,16 @@ public class BasePage {
         languageOption.should(exist);
         languageOption.click();
         selectedLanguageContainer.should(visible);
+    }
+
+    @Step("Search hotel by location - {location}, check-in date - {checkInDate}, check-out date - {checkOutDate}, " +
+            "rooms - {roomCount}, adults - {adultCount}")
+    public void searchHotel(String location, LocalDate checkInDate, LocalDate checkOutDate, int roomCount, int adultCount) {
+        this.searchAndSelectLocation(location);
+        this.findAndSelectDate(checkInDate);
+        this.findAndSelectDate(checkOutDate);
+        this.selectRoomQuantity(roomCount);
+        this.selectAdultQuantity(adultCount);
     }
 
     @Step("Search and select location: {location}")
@@ -46,8 +57,7 @@ public class BasePage {
 
     @Step("Find and select date from calendar: {targetDate}")
     public void findAndSelectDate(LocalDate targetDate) {
-        SelenideElement defaultCheckInDay = $$x("//div[@aria-selected='true']//span").first();
-        LocalDate selectedDay = LocalDate.parse(Objects.requireNonNull(defaultCheckInDay.getAttribute("data-selenium-date")));
+        LocalDate selectedDay = LocalDate.parse(Objects.requireNonNull(this.selectedDay.getAttribute("data-selenium-date")));
         moveCalendarToCorrectMonth(selectedDay, targetDate);
         this.selectTargetDate(targetDate);
     }
