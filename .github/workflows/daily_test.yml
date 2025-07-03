@@ -17,15 +17,7 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '21'
-
-      - name: Cache Maven dependencies
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.m2/repository
-          key: maven-${{ runner.os }}-${{ hashFiles('**/pom.xml') }}
-          restore-keys: |
-            maven-${{ runner.os }}-
+          cache: 'maven'
 
       - name: Run tests
         run: |
@@ -125,7 +117,7 @@ jobs:
           username: ${{ secrets.EMAIL_USERNAME }}
           password: ${{ secrets.EMAIL_PASSWORD }}
           subject: "Allure Test Report"
-          to: ${{ env.RECIPIENT_EMAIL }}
+          to: ${{ secrets.RECIPIENT_EMAIL || 'dong.gia.tran@agest.vn' }}
           from: noreply-automation@dongthgtest.com
           content_type: text/html
           body: ${{ steps.allure_report_html.outputs.content }}
