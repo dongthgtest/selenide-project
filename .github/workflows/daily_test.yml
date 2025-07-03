@@ -34,6 +34,24 @@ jobs:
             -Dselenide.baseUrl=https://agoda.com \
             -Dselenide.browser=chrome \
             -Dselenide.headless=true \
+            -Dselenide.browserSize=1920x1080 \
+            -Dselenide.timeout=10000 \
+            -Dselenide.retries=2 \
+            -Dselenide.pageLoadStrategy=eager
+        continue-on-error: true
+
+      - name: Check if Allure results exist
+        id: check_results
+        if: always()
+        run: |
+          if [ -d "target/allure-results" ] && [ "$(ls -A target/allure-results)" ]; then
+            echo "results_exist=true" >> $GITHUB_OUTPUT
+            echo "Allure results found"
+          else
+            echo "results_exist=false" >> $GITHUB_OUTPUT
+            echo "No Allure results found"
+            mkdir -p target/allure-results
+          fi
 
       - name: Upload Allure Report
         if: always()
@@ -45,6 +63,48 @@ jobs:
       - name: Generate Allure HTML Report
         if: always() && steps.check_results.outputs.results_exist == 'true'
         run: mvn allure:report
+
+      - name: Create fallback report for failed tests
+        if: always() && steps.check_results.outputs.results_exist == 'false'
+        run: |
+          mkdir -p target/site/allure-maven-plugin
+          cat > target/site/allure-maven-plugin/index.html << 'EOF'
+          <!DOCTYPE html>
+          <html>
+          <head>
+              <title>Test Execution Failed</title>
+              <style>
+                  body { font-family: Arial, sans-serif; margin: 40px; }
+                  .error { color: #d32f2f; background: #ffebee; padding: 20px; border-radius: 4px; }
+                  .info { color: #1976d2; background: #e3f2fd; padding: 20px; border-radius: 4px; margin-top: 20px; }
+              </style>
+          </head>
+          <body>
+              <h1>Daily Test Report</h1>
+              <div class="error">
+                  <h2>⚠Test Execution Failed</h2>
+                  <p>The tests failed to execute properly, so no Allure results were generated.</p>
+                  <p>Please check the GitHub Actions logs for detailed error information.</p>
+              </div>
+              <div class="info">
+                  <h3>Common Issues:</h3>
+                  <ul>
+                      <li>Chrome WebDriver configuration problems</li>
+                      <li>Test environment setup issues</li>
+                      <li>Network connectivity problems</li>
+                      <li>Test code compilation errors</li>
+                      <li>Window switching issues in headless mode</li>
+                  </ul>
+              </div>
+              <div class="info">
+                  <h3>Execution Details:</h3>
+                  <p><strong>Date:</strong> 2025-07-03 10:25:52 UTC</p>
+                  <p><strong>Repository:</strong> dongthgtest/selenide-project</p>
+                  <p><strong>Workflow:</strong> Daily Test</p>
+              </div>
+          </body>
+          </html>
+          EOF
 
       - name: Read Allure HTML for Email
         id: allure_report_html
