@@ -117,7 +117,7 @@ jobs:
           username: ${{ secrets.EMAIL_USERNAME }}
           password: ${{ secrets.EMAIL_PASSWORD }}
           subject: "Allure Test Report"
-          to: ${{ secrets.RECIPIENT_EMAIL || 'dong.gia.tran@agest.vn' }}
+          to: ${{ secrets.RECIPIENT_EMAIL }}
           from: noreply-automation@dongthgtest.com
           content_type: text/html
           body: ${{ steps.allure_report_html.outputs.content }}
