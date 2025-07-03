@@ -27,11 +27,13 @@ jobs:
           restore-keys: |
             maven-${{ runner.os }}-
 
-      - name: Run Maven tests
+      - name: Run tests
         run: |
-          mvn clean test \ 
-          -DsuiteXmlFile=src/test/resources/specific.test.xml \ 
-          -Dselenide.baseUrl=https://agoda.com
+          mvn clean test \
+            -DsuiteXmlFile=src/test/resources/specific.test.xml \
+            -Dselenide.baseUrl=https://agoda.com \
+            -Dselenide.browser=chrome \
+            -Dselenide.headless=true \
 
       - name: Upload Allure Report
         if: always()
@@ -41,7 +43,7 @@ jobs:
           path: target/allure-results
 
       - name: Generate Allure HTML Report
-        if: always()
+        if: always() && steps.check_results.outputs.results_exist == 'true'
         run: mvn allure:report
 
       - name: Read Allure HTML for Email
