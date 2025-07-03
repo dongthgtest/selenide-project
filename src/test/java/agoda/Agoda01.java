@@ -11,12 +11,12 @@ import java.time.LocalDate;
 public class Agoda01 extends TestBase {
     private final HomePage homePage = new HomePage();
 
-    String destination;
-    int targetRooms;
-    int targetAdults;
-    LocalDate checkInDate;
-    LocalDate checkOutDate;
-    int expectedHotelsFound;
+    private String destination;
+    private int targetRooms;
+    private int targetAdults;
+    private LocalDate checkInDate;
+    private LocalDate checkOutDate;
+    private int expectedHotelsFound;
 
     @BeforeMethod
     public void preCondition() {
@@ -29,7 +29,7 @@ public class Agoda01 extends TestBase {
     }
 
     @Test
-    public void test01() {
+    public void verifySearchAndSortHotelSuccessfully() {
         homePage.searchAndSelectLocation(destination);
         homePage.findAndSelectDate(checkInDate);
         homePage.findAndSelectDate(checkOutDate);
@@ -41,6 +41,6 @@ public class Agoda01 extends TestBase {
 
         searchResultPage.sortByLowestPrice();
         searchResultPage.shouldSearchResultDisplayed(expectedHotelsFound, destination);
-        searchResultPage.shouldSortByLowestPrice();
+        searchResultPage.shouldSortByLowestPrice(expectedHotelsFound);
     }
 }
