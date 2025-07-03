@@ -19,7 +19,7 @@ public class Agoda01 extends TestBase {
     int expectedHotelsFound;
 
     @BeforeMethod
-    public void PreCondition() {
+    public void preCondition() {
         destination = "Da Nang";
         targetRooms = 2;
         targetAdults = 4;
