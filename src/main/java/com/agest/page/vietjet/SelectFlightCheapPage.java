@@ -2,6 +2,7 @@ package com.agest.page.vietjet;
 
 import com.agest.constant.vietjet.Direction;
 import com.agest.page.IPage;
+import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
 import lombok.extern.slf4j.Slf4j;
@@ -15,7 +16,7 @@ import static com.agest.constant.Formatter.YEAR_MONTH_FORMATTER;
 import static com.agest.constant.vietjet.Direction.DEPARTURE;
 import static com.agest.constant.vietjet.Direction.RETURN;
 import static com.codeborne.selenide.Condition.text;
-import static com.codeborne.selenide.Selenide.$x;
+import static com.codeborne.selenide.Selenide.$$x;
 import static com.codeborne.selenide.WebDriverRunner.url;
 
 @Slf4j
@@ -52,10 +53,10 @@ public class SelectFlightCheapPage extends SelectTravelOptionPage implements IPa
 
                 LocalDate endDate = startDate.plusDays(daysTrip);
 
-                int departurePrice = getMinPrice(DEPARTURE, startDate);
+                int departurePrice = getPriceByDate(DEPARTURE, startDate);
                 log.debug("Departure flight price on {}: {}", startDate, departurePrice);
 
-                int returnPrice = getMinPrice(RETURN, endDate);
+                int returnPrice = getPriceByDate(RETURN, endDate);
                 log.debug("Return flight price on {}: {}", endDate, returnPrice);
 
                 int totalPrice = departurePrice + returnPrice;
@@ -113,7 +114,14 @@ public class SelectFlightCheapPage extends SelectTravelOptionPage implements IPa
                 .click();
     }
 
-    private int getMinPrice(Direction direction, LocalDate date) {
+    /**
+     * Get the price for a flight on a specific date.
+     *
+     * @param direction the flight direction (departure or return)
+     * @param date      the date to check
+     * @return the minimum price for the flight on that date
+     */
+    private int getPriceByDate(Direction direction, LocalDate date) {
         YearMonth yearMonth = YearMonth.from(date);
         int dayOfMonth = date.getDayOfMonth();
         log.info("Getting minimum price for {} flight on day {}", direction.getName(), date);
@@ -127,43 +135,46 @@ public class SelectFlightCheapPage extends SelectTravelOptionPage implements IPa
                 selectMonth(RETURN, yearMonth);
             }
         }
-        SelenideElement priceLabel = $x("//div[p[contains(@class, 'MuiTypography-h2') and text()='%s']]/following-sibling::div[2]//div[@role='button' and p[text()=%d]]//span[1]".formatted(
-                direction == DEPARTURE ? i18n.t("vietjet.panel.departureFlight") : i18n.t("vietjet.panel.returnFlight"),
-                dayOfMonth
-        ));
-
+        SelenideElement priceLabel = (direction == DEPARTURE ? getDepartureFlightHeaderContainer() : getReturnFlightHeaderContainer())
+                .sibling(1)
+                .$x(".//div[@role='button' and p[text()=%d]]//span[1]".formatted(dayOfMonth));
         return Integer.parseInt(priceLabel.getText().replaceAll(",", ""));
     }
 
+    /**
+     * Get the currently selected departure flight dates
+     *
+     * @return A YearMonth object representing the selected departure month.
+     */
     private YearMonth getSelectedDepartureMonth() {
         String monthText = selectedFlightDate.get(0).getText();
         return YearMonth.parse(monthText, YEAR_MONTH_FORMATTER);
     }
 
+    /**
+     * Get the currently selected return flight dates
+     *
+     * @return A YearMonth object representing the selected return month.
+     */
     private YearMonth getSelectedReturnMonth() {
         String monthText = selectedFlightDate.get(2).getText();
         return YearMonth.parse(monthText, YEAR_MONTH_FORMATTER);
     }
 
     private SelenideElement getDepartureFlightHeaderContainer() {
-        return $x("//div[p[contains(@class, 'MuiTypography-h2') and text()='%s']]".formatted(
-                i18n.t("vietjet.panel.departureFlight")
-        ));
+        return flightHeaderContainers.findBy(text(i18n.t("vietjet.panel.departureFlight")));
     }
 
     private SelenideElement getReturnFlightHeaderContainer() {
-        return $x("//div[p[contains(@class, 'MuiTypography-h2') and text()='%s']]".formatted(
-                i18n.t("vietjet.panel.returnFlight")
-        ));
+        return flightHeaderContainers.findBy(text(i18n.t("vietjet.panel.returnFlight")));
     }
 
     private int getEarliestAvailableFlightDate() {
-        SelenideElement earliestDate = getDepartureFlightHeaderContainer().sibling(1).$x(".//div[@role='button' and div/span]/p");
+        SelenideElement earliestDate = getDepartureFlightHeaderContainer()
+                .sibling(1)
+                .$x(".//div[@role='button' and div/span]/p");
         return Integer.parseInt(earliestDate.getText());
     }
 
-    private int getLatestAvailableFlightDate() {
-        SelenideElement latestDate = getDepartureFlightHeaderContainer().sibling(1).$x(".//div[@role='button' and div/span]/p[last()]");
-        return Integer.parseInt(latestDate.getText());
-    }
+    private final ElementsCollection flightHeaderContainers = $$x("//div[p[contains(@class, 'MuiTypography-h2')]]");
 }

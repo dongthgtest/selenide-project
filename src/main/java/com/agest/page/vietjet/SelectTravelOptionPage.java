@@ -97,6 +97,11 @@ public class SelectTravelOptionPage extends BasePage implements IPage {
         headerLabels.first().$("span", 1).shouldHave(text(String.join(", ", passengerLabels)));
     }
 
+    /**
+     * Selects a ticket by its price.
+     *
+     * @param price The price of the ticket to select.
+     */
     private void selectTicketByPrice(int price) {
         // Implementation to select a ticket by price
         String formattedPrice = String.format("%,d", price);
@@ -104,11 +109,21 @@ public class SelectTravelOptionPage extends BasePage implements IPage {
         ticketPriceLabels.findBy(text(formattedPrice)).scrollIntoView(true).click();
     }
 
+    /**
+     * Gets the selected flight date from the page.
+     *
+     * @return The selected flight date as a MonthDay object.
+     */
     private MonthDay getSelectedDate() {
         String raw = selectedFlightDate.get(1).getText().replaceAll("(st|nd|rd|th)$", ""); // Remove ordinal suffixes if present
         return MonthDay.parse(raw, DateTimeFormatter.ofPattern(i18n.t("vietjet.selectFlight.stickyHeader.monthDayFormat"), i18n.getCurrentLang()));
     }
 
+    /**
+     * Retrieves the cheapest ticket price from the page.
+     *
+     * @return The cheapest ticket price as an integer.
+     */
     private int getCheapestPrice() {
         // This page is lazy loaded, so we need to ensure the ticket prices are loaded
         int total = -1; // Initialize total to an invalid value
@@ -128,5 +143,4 @@ public class SelectTravelOptionPage extends BasePage implements IPage {
     private final ElementsCollection ticketSuffixPriceLabels = $$(".MuiGrid-item .MuiTypography-body1");
     private final ElementsCollection headerLabels = $$("p[variantmd=h3]");
     protected final ElementsCollection selectedFlightDate = $$(".slick-current p");
-    protected final ElementsCollection availableFlightDate = $$(".slick-slide");
 }

@@ -32,7 +32,7 @@ public class HomePage extends BasePage implements IPage {
         selectDepartureAirport(criteria.getDepartureAirport());
         selectReturnAirport(criteria.getArrivalAirport());
         selectDate(criteria.getDepartureDate());
-        if (criteria.getTicketType() == TicketType.ROUND_TRIP) {
+        if (criteria.isRoundTrip()) {
             selectDate(criteria.getReturnDate());
         }
         selectAdultCount(criteria.getNumberOfAdults());
@@ -89,16 +89,19 @@ public class HomePage extends BasePage implements IPage {
         getDestinationOption(airport).click();
     }
 
+    @Step("Select number of adults: {count}")
     private void selectAdultCount(int count) {
         selectPassengerCount(i18n.t("vietjet.common.adultLabel"), count);
         log.debug("Selected {} adults", count);
     }
 
+    @Step("Select number of children: {count}")
     private void selectChildCount(int count) {
         selectPassengerCount(i18n.t("vietjet.common.childLabel"), count);
         log.debug("Selected {} children", count);
     }
 
+    @Step("Select number of infants: {count}")
     private void selectInfantCount(int count) {
         selectPassengerCount(i18n.t("vietjet.common.infantLabel"), count);
         log.debug("Selected {} infants", count);
@@ -121,7 +124,6 @@ public class HomePage extends BasePage implements IPage {
     }
 
     private SelenideElement getDepartureAirportInput() {
-//        return getAirportInput("Điểm khởi hành");
         return getAirportInput(i18n.t("vietjet.home.departureLabel"));
     }
 
@@ -170,12 +172,10 @@ public class HomePage extends BasePage implements IPage {
      */
     private SelenideElement getCalendarDate(LocalDate date) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(i18n.t("vietjet.common.calendarHeaderFormat"));
-        String calendarHeader = date.format(DateTimeFormatter.ofPattern(i18n.t("vietjet.common.calendarHeaderFormat")));
-//        YearMonth yearMonth = YearMonth.from(date);
+        String calendarHeader = date.format(formatter);
         return calendarHeaderLabel.findBy(text(calendarHeader))
                 .sibling(1)
                 .$x(".//span[@class='rdrDayNumber']/span[text()='%d']".formatted(date.getDayOfMonth()));
-//        return $x(String.format("//div[@class='rdrMonthName' and text()='%s']/following-sibling::div[@class='rdrDays']//span[@class='rdrDayNumber']/span[text()='%d']", calendarHeader, date.getDayOfMonth()));
     }
 
     /**
@@ -185,18 +185,6 @@ public class HomePage extends BasePage implements IPage {
      */
     private SelenideElement getDestinationOption(Airport airport) {
         return $x(String.format("//div[@id='panel1a-content']//div[contains(@class, 'MuiBox-root') and div/div[@translate='no' and text()='%s']]", airport.getCode()));
-    }
-
-    private int getAdultCount() {
-        return getNumberOfPassengers(i18n.t("vietjet.common.adultLabel"));
-    }
-
-    private int getChildCount() {
-        return getNumberOfPassengers(i18n.t("vietjet.common.childLabel"));
-    }
-
-    private int getInfantCount() {
-        return getNumberOfPassengers(i18n.t("vietjet.common.infantLabel"));
     }
 
     private int getNumberOfPassengers(String label) {
