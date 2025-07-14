@@ -1,0 +1,26 @@
+vietjet:
+  airport:
+    SGN: Tp. Hồ Chí Minh
+    HAN: Hà Nội
+  common:
+    adultLabel: Người lớn
+    childLabel: Trẻ em
+    infantLabel: Em bé
+    calendarHeaderFormat: "'Tháng' MM yyyy"
+  panel:
+    departureFlight: Chuyến đi
+    returnFlight: Chuyến về
+    dateFormat: E, MM/dd/yyyy
+  home:
+    departureLabel: Điểm khởi hành
+    arrivalLabel: Điểm đến
+    departureDateLabel: Ngày đi
+    returnDateLabel: Ngày về
+    findFlightButton: Tìm chuyến bay
+    findLowestFareLabel: Tìm vé rẻ nhất
+  selectFlight:
+    stickyHeader:
+      monthDayFormat: d 'tháng' M
+    nextButton: Đi tiếp
+  passengerInfo:
+    title: Thông tin hành khách
