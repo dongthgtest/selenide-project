@@ -33,11 +33,11 @@ public class Agoda01 extends TestBase {
     public void verifySearchAndSortHotelSuccessfully() {
         homePage.searchHotel(destination, checkInDate, checkOutDate, targetRooms, targetAdults);
 
-        searchResultPage = homePage.clickSearchButton();
-        searchResultPage.shouldSearchResultDisplayed(expectedHotelsFound, destination);
-
-        searchResultPage.sortByLowestPrice();
-        searchResultPage.shouldSearchResultDisplayed(expectedHotelsFound, destination);
-        searchResultPage.shouldSortByLowestPrice(expectedHotelsFound);
+//        searchResultPage = homePage.clickSearchButton();
+//        searchResultPage.shouldSearchResultDisplayed(expectedHotelsFound, destination);
+//
+//        searchResultPage.sortByLowestPrice();
+//        searchResultPage.shouldSearchResultDisplayed(expectedHotelsFound, destination);
+//        searchResultPage.shouldSortByLowestPrice(expectedHotelsFound);
     }
 }

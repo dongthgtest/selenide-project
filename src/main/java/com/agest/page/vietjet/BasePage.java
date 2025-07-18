@@ -9,6 +9,8 @@ import static com.codeborne.selenide.Condition.exist;
 import static com.codeborne.selenide.Selenide.*;
 
 public class BasePage {
+    private final SelenideElement notificationPopup = $("#preview-notification-frame");
+    private final SelenideElement notificationCloseButton = $("#NC_CTA_TWO");
 
     protected SelenideElement getRippleButton(String label) {
         return $x("//button[descendant::span[text()='%s']]".formatted(label));
@@ -22,7 +24,4 @@ public class BasePage {
             switchTo().defaultContent();
         }
     }
-
-    private final SelenideElement notificationPopup = $("#preview-notification-frame");
-    private final SelenideElement notificationCloseButton = $("#NC_CTA_TWO");
 }

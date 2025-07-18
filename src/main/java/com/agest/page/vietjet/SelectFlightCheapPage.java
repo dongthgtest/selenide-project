@@ -21,6 +21,7 @@ import static com.codeborne.selenide.WebDriverRunner.url;
 
 @Slf4j
 public class SelectFlightCheapPage extends SelectTravelOptionPage implements IPage {
+    private final ElementsCollection flightHeaderContainers = $$x("//div[p[contains(@class, 'MuiTypography-h2')]]");
 
     @Step("Verify Select Flight Cheap page is displayed")
     public void verifyPageIsDisplayed() {
@@ -175,6 +176,4 @@ public class SelectFlightCheapPage extends SelectTravelOptionPage implements IPa
                 .$x(".//div[@role='button' and div/span]/p");
         return Integer.parseInt(earliestDate.getText());
     }
-
-    private final ElementsCollection flightHeaderContainers = $$x("//div[p[contains(@class, 'MuiTypography-h2')]]");
 }

@@ -12,6 +12,12 @@ import org.testng.annotations.Test;
 import java.time.LocalDate;
 
 public class Vietjet01 extends TestBase {
+    LocalDate fromDate = LocalDate.now().plusDays(1);
+    LocalDate toDate = fromDate.plusDays(3);
+    SearchFlightCriteria criteria;
+    HomePage homePage = new HomePage();
+    SelectTravelOptionPage selectTravelOptionPage = new SelectTravelOptionPage();
+    PassengerInformationPage passengerInformationPage = new PassengerInformationPage();
 
     @BeforeMethod(alwaysRun = true)
     public void init() {
@@ -82,11 +88,4 @@ public class Vietjet01 extends TestBase {
 
         passengerInformationPage.verifyTicketInformation(criteria);
     }
-
-    LocalDate fromDate = LocalDate.now().plusDays(1);
-    LocalDate toDate = fromDate.plusDays(3);
-    SearchFlightCriteria criteria;
-    HomePage homePage = new HomePage();
-    SelectTravelOptionPage selectTravelOptionPage = new SelectTravelOptionPage();
-    PassengerInformationPage passengerInformationPage = new PassengerInformationPage();
 }
