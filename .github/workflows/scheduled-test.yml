@@ -1,4 +1,4 @@
-name: Daily Test
+name: Scheduled test
 
 on:
   push:
@@ -37,8 +37,8 @@ jobs:
           testSuite=${{ inputs.test_suite }}
           baseUrl=${{ env.BASE_URL }}
           mvn clean test \
-            -DsuiteXmlFile=src/test/resources/suite/$testSuite.xml \
-            -Dselenide.baseUrl=$baseUrl \
+            -DsuiteXmlFile=src/test/resources/suite/Agoda.xml \
+            -Dselenide.baseUrl=https://www.agoda.com/ \
             -Dselenide.browser=chrome \
             -Dselenide.headless=true \
             -Dselenide.browserSize=1920x1080 \
@@ -51,20 +51,21 @@ jobs:
         id: check_results
         if: always()
         run: |
-          if [ -d "target/allure-results" ] && [ "$(ls -A target/allure-results)" ]; then
+          if [ -d "allure-results" ] && [ "$(ls -A allure-results)" ]; then
             echo "results_exist=true" >> $GITHUB_OUTPUT
             echo "Allure results found"
           else
             echo "results_exist=false" >> $GITHUB_OUTPUT
             echo "No Allure results found"
-            mkdir -p target/allure-results
+            mkdir -p allure-results
           fi
+
       - name: Upload Allure Report
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: allure-report
-          path: target/allure-results
+          path: allure-results
 
       - name: Generate Allure HTML Report
         if: always() && steps.check_results.outputs.results_exist == 'true'
@@ -111,6 +112,7 @@ jobs:
           </body>
           </html>
           EOF
+
       - name: Read Allure HTML for Email
         id: allure_report_html
         if: always()
@@ -118,6 +120,7 @@ jobs:
           echo "content<<EOF" >> $GITHUB_OUTPUT
           cat target/site/allure-maven-plugin/index.html >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
+
       - name: Send Allure Report via Email
         if: always()
         uses: dawidd6/action-send-mail@v6
