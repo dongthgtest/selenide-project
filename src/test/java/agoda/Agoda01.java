@@ -2,9 +2,9 @@ package agoda;
 
 import com.agest.page.agoda.HomePage;
 import com.agest.page.agoda.SearchResultPage;
+import com.agest.utils.DateUtils;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import utils.DateUtils;
 
 import java.time.LocalDate;
 
