@@ -1,0 +1,27 @@
+vietjet:
+  airport:
+    SGN: Ho Chi Minh
+    HAN: Ha Noi
+  common:
+    adultLabel: Adults
+    childLabel: Childrens
+    infantLabel: Infants
+    calendarHeaderFormat: MMMM yyyy
+  panel:
+    departureFlight: Departure flight
+    returnFlight: Return flight
+  home:
+    departureLabel: From
+    arrivalLabel: To
+    departureDateLabel: Departure date
+    returnDateLabel: Return date
+    findFlightButton: Let's go
+    findLowestFareLabel: Find lowest fare
+  selectFlight:
+    header:
+      flightTypeLabel:
+    stickyHeader:
+      monthDayFormat: MMMM d
+    nextButton: Continue
+  passengerInfo:
+    title: Passenger information

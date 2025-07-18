@@ -12,13 +12,13 @@ includes dependencies for logging, reporting, and test execution with TestNG, Al
 - [x] Parallel/distributed testing
 - [x] Cross browsers testing: Chrome, Edge
 - [x] Selenium Grid/Shard
-- [ ] Test cases: VJ, Agoda, TBD (1/8 - 1 Agoda tests)
+- [ ] Test cases: VJ, Agoda, TBD (3/8 - 1 Agoda tests, 2 VJ tests)
 - [ ] CI: Schedule test, send email notification result with summary
 
 ### Use Cases
 
 - [ ] Content testing
-- [ ] Multiple languages testing
+- [x] Multiple languages testing
 - [x] Group tests by purposes: regression, smoke/sanity test
 - [x] Source control practice: branch
 - [ ] Switch test environment: dev, stg (dev: agoda.com, stg: vj.com)
