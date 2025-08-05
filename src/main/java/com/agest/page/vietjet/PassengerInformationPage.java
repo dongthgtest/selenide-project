@@ -17,6 +17,8 @@ import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$x;
 
 public class PassengerInformationPage implements IPage {
+    private final SelenideElement titleLabel = $("h3.MuiTypography-h3");
+    private final ElementsCollection ticketInfoHeaders = $$x("//div[p[@variantlg='h3']]");
 
     public void verifyPassengerInformationPageDisplayed() {
         titleLabel.shouldHave(text(i18n.t("vietjet.passengerInfo.title")));
@@ -60,7 +62,4 @@ public class PassengerInformationPage implements IPage {
         )));
         infos.get(2).shouldHave(partialText(date.format(DateTimeFormatter.ofPattern("EEE, dd/MM/yyyy", i18n.getCurrentLang()))));
     }
-
-    private final SelenideElement titleLabel = $("h3.MuiTypography-h3");
-    private final ElementsCollection ticketInfoHeaders = $$x("//div[p[@variantlg='h3']]");
 }

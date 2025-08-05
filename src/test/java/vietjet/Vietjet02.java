@@ -16,6 +16,14 @@ import static com.agest.constant.vietjet.Airport.HO_CHI_MINH;
 import static com.agest.constant.vietjet.TicketType.ROUND_TRIP;
 
 public class Vietjet02 extends TestBase {
+    LocalDate fromDate = LocalDate.now().plusDays(1);
+    LocalDate toDate = fromDate.plusDays(3);
+    SearchFlightCriteria criteria;
+    HomePage homePage = new HomePage();
+    SelectFlightCheapPage selectFlightCheapPage = new SelectFlightCheapPage();
+    SelectTravelOptionPage selectTravelOptionPage = new SelectTravelOptionPage();
+    PassengerInformationPage passengerInformationPage = new PassengerInformationPage();
+    Pair<LocalDate, LocalDate> dateRange;
 
     @BeforeMethod(alwaysRun = true)
     public void init() {
@@ -101,13 +109,4 @@ public class Vietjet02 extends TestBase {
 
         passengerInformationPage.verifyTicketInformation(criteria);
     }
-
-    LocalDate fromDate = LocalDate.now().plusDays(1);
-    LocalDate toDate = fromDate.plusDays(3);
-    SearchFlightCriteria criteria;
-    HomePage homePage = new HomePage();
-    SelectFlightCheapPage selectFlightCheapPage = new SelectFlightCheapPage();
-    SelectTravelOptionPage selectTravelOptionPage = new SelectTravelOptionPage();
-    PassengerInformationPage passengerInformationPage = new PassengerInformationPage();
-    Pair<LocalDate, LocalDate> dateRange;
 }
