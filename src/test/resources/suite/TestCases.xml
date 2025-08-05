@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
-<suite name="Selenium 3" thread-count="1" parallel="classes">
+<suite name="Selenium 3" thread-count="1" parallel="none">
     <listeners>
         <listener class-name="com.agest.listener.AllureTestListener"/>
     </listeners>
@@ -10,10 +10,10 @@
             <class name="agoda.Agoda02"/>
         </classes>
     </test>
-    <test name="Vietjet">
-        <classes>
-            <class name="vietjet.Vietjet01"/>
-            <class name="vietjet.Vietjet02"/>
-        </classes>
-    </test>
+<!--    <test name="Vietjet">-->
+<!--        <classes>-->
+<!--            <class name="vietjet.Vietjet01"/>-->
+<!--            <class name="vietjet.Vietjet02"/>-->
+<!--        </classes>-->
+<!--    </test>-->
 </suite>

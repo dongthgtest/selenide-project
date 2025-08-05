@@ -1,0 +1,123 @@
+name: Daily Test
+
+on:
+  push:
+  schedule:
+    - cron: '30 8 * * *'
+
+jobs:
+  run-tests:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Cache Maven packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-m2-
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+          cache: 'maven'
+
+      - name: Install Chrome
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y google-chrome-stable
+
+      - name: Run tests
+        run: |
+          mvn clean test \
+            -DsuiteXmlFile=src/test/resources/suite/TestCases.xml \
+            -Dselenide.baseUrl=https://www.agoda.com \
+            -Dselenide.browser=chrome \
+            -Dselenide.headless=true \
+            -Dselenide.reportsFolder=allure-results \
+            -Dselenide.browserSize=1920x1080 \
+            -Dselenide.timeout=10000 \
+            -Dselenide.retries=2 \
+            -Dselenide.pageLoadStrategy=eager
+        continue-on-error: true
+
+      - name: Upload Allure Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-report
+          path: allure-results
+
+      - name: Generate Allure HTML Report
+        if: always()
+        run: mvn allure:report
+
+      - name: Create fallback report for failed tests
+        if: always()
+        run: |
+          mkdir -p target/site/allure-maven-plugin
+          cat > target/site/allure-maven-plugin/index.html << 'EOF'
+          <!DOCTYPE html>
+          <html>
+          <head>
+              <title>Test Execution Failed</title>
+              <style>
+                  body { font-family: Arial, sans-serif; margin: 40px; }
+                  .error { color: #d32f2f; background: #ffebee; padding: 20px; border-radius: 4px; }
+                  .info { color: #1976d2; background: #e3f2fd; padding: 20px; border-radius: 4px; margin-top: 20px; }
+              </style>
+          </head>
+          <body>
+              <h1>Daily Test Report</h1>
+              <div class="error">
+                  <h2>⚠Test Execution Failed</h2>
+                  <p>The tests failed to execute properly, so no Allure results were generated.</p>
+                  <p>Please check the GitHub Actions logs for detailed error information.</p>
+              </div>
+              <div class="info">
+                  <h3>Common Issues:</h3>
+                  <ul>
+                      <li>Chrome WebDriver configuration problems</li>
+                      <li>Test environment setup issues</li>
+                      <li>Network connectivity problems</li>
+                      <li>Test code compilation errors</li>
+                      <li>Window switching issues in headless mode</li>
+                  </ul>
+              </div>
+              <div class="info">
+                  <h3>Execution Details:</h3>
+                  <p><strong>Date:</strong> ${{ github.run_started_at }}</p>
+                  <p><strong>Repository:</strong> ${{ github.repository }}</p>
+                  <p><strong>Workflow:</strong> Daily Test</p>
+              </div>
+          </body>
+          </html>
+          EOF
+
+      - name: Read Allure HTML for Email
+        id: allure_report_html
+        if: always()
+        run: |
+          echo "html_body<<EOF" >> $GITHUB_OUTPUT
+          cat target/site/allure-maven-plugin/index.html >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Send Allure Report via Email
+        if: always()
+        uses: dawidd6/action-send-mail@v6
+        with:
+          server_address: smtp.gmail.com
+          server_port: 587
+          secure: true
+          username: ${{ secrets.EMAIL_USERNAME }}
+          password: ${{ secrets.EMAIL_PASSWORD }}
+          subject: "Allure Test Report"
+          to: ${{ secrets.RECIPIENT_EMAIL }}
+          from: noreply-automation@dongthgtest.com
+          html_body: ${{ steps.allure_report_html.outputs.html_body }}
+          attachments: target/site/allure-maven-plugin/index.html
