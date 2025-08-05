@@ -31,8 +31,7 @@ public class BasePage {
         selectedLanguageContainer.should(visible);
     }
 
-    @Step("Search hotel by location - {location}, check-in date - {checkInDate}, check-out date - {checkOutDate}, " +
-            "rooms - {roomCount}, adults - {adultCount}")
+    @Step("Search hotel by criteria - {criteria}")
     public void searchHotel(SearchHotelCriteria criteria) {
         searchAndSelectLocation(criteria.getDestination());
         findAndSelectDate(criteria.getCheckInDate());
