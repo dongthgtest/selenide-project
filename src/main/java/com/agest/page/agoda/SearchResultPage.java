@@ -1,7 +1,9 @@
 package com.agest.page.agoda;
 
+import com.agest.model.agoda.FilterHotelCriteria;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
+import io.qameta.allure.Step;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,11 +11,12 @@ import java.util.Optional;
 
 import static com.codeborne.selenide.CollectionCondition.sizeGreaterThan;
 import static com.codeborne.selenide.Condition.*;
-import static com.codeborne.selenide.Selenide.$$x;
-import static com.codeborne.selenide.Selenide.$x;
+import static com.codeborne.selenide.Selenide.*;
 
 public class SearchResultPage {
     private final SelenideElement sortLowestPriceButton = $x("//button[@data-element-name='search-sort-price']");
+    private final SelenideElement minPriceTextbox = $("#price_box_0");
+    private final SelenideElement maxPriceTextbox = $("#price_box_1");
 
     public void shouldSearchResultDisplayed(int expectedHotelsFound, String destination) {
         ElementsCollection hotelList = getHotelList();
@@ -69,4 +72,25 @@ public class SearchResultPage {
         }
         return Optional.empty();
     }
+
+    public void applyFilter(FilterHotelCriteria criteria) {
+        if (criteria.getPriceRange() != null) {
+            setPriceFilter(minPriceTextbox, criteria.getPriceRange().getLeft());
+            setPriceFilter(maxPriceTextbox, criteria.getPriceRange().getRight());
+        }
+        if (criteria.getRating() != null) {
+            String dynamicRatingSelector = String.format("//label[@data-component='search-filter-starratingwithluxury']" +
+                    "//div[span[div[div[span[contains(text(),'%s-')]]]]]", criteria.getRating());
+            SelenideElement ratingFilter = $x(dynamicRatingSelector);
+            ratingFilter.click();
+        }
+    }
+
+    @Step("Set minimum price to {price}")
+    protected void setPriceFilter(SelenideElement element, int price) {
+        element.clear();
+        element.setValue(String.valueOf(price));
+    }
+
+
 }

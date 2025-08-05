@@ -6,7 +6,7 @@
     </listeners>
     <test name="Selenide test">
         <classes>
-            <class name="agoda.Agoda01"/>
+            <class name="agoda.Agoda02"/>
         </classes>
     </test>
 </suite>
