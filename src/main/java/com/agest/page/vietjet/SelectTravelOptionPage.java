@@ -28,6 +28,11 @@ import static com.codeborne.selenide.WebDriverRunner.url;
 
 @Slf4j
 public class SelectTravelOptionPage extends BasePage implements IPage {
+    private final SelenideElement closeDialogButton = $("[aria-label=close]");
+    private final ElementsCollection ticketPriceLabels = $$(".MuiGrid-item p.MuiTypography-h4.MuiTypography-root:not([variantlg])");
+    private final ElementsCollection ticketSuffixPriceLabels = $$(".MuiGrid-item .MuiTypography-body1");
+    private final ElementsCollection headerLabels = $$("p[variantmd=h3]");
+    protected final ElementsCollection selectedFlightDate = $$(".slick-current p");
 
     @Step("Verify Select Travel Options page is displayed")
     public void verifyPageIsDisplayed() {
@@ -137,10 +142,4 @@ public class SelectTravelOptionPage extends BasePage implements IPage {
                 .min()
                 .orElseThrow(() -> new IllegalStateException("No ticket prices found"));
     }
-
-    private final SelenideElement closeDialogButton = $("[aria-label=close]");
-    private final ElementsCollection ticketPriceLabels = $$(".MuiGrid-item p.MuiTypography-h4.MuiTypography-root:not([variantlg])");
-    private final ElementsCollection ticketSuffixPriceLabels = $$(".MuiGrid-item .MuiTypography-body1");
-    private final ElementsCollection headerLabels = $$("p[variantmd=h3]");
-    protected final ElementsCollection selectedFlightDate = $$(".slick-current p");
 }
