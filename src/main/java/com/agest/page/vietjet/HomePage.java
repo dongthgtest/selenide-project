@@ -19,6 +19,13 @@ import static com.codeborne.selenide.Selenide.*;
 
 @Slf4j
 public class HomePage extends BasePage implements IPage {
+    private final SelenideElement popUpDialog = $("#popup-dialog-description");
+    private final SelenideElement acceptDialog = $x("//div[@role='dialog']//span/h5");
+    private final SelenideElement returnRadioButton = $("[value=roundTrip]");
+    private final SelenideElement oneWayRadioButton = $("[value=oneway]");
+    private final ElementsCollection calendarHeaderLabel = $$(".rdrMonthName");
+    private final SelenideElement calendarPrevButton = $(".rdrPprevButton");
+    private final SelenideElement calendarNextButton = $(".rdrNextButton");
 
     @Step("Accept cookie dialog")
     public void acceptCookie() {
@@ -215,12 +222,4 @@ public class HomePage extends BasePage implements IPage {
         findFlightButton.should(clickable);
         findFlightButton.click();
     }
-
-    private final SelenideElement popUpDialog = $("#popup-dialog-description");
-    private final SelenideElement acceptDialog = $x("//div[@role='dialog']//span/h5");
-    private final SelenideElement returnRadioButton = $("[value=roundTrip]");
-    private final SelenideElement oneWayRadioButton = $("[value=oneway]");
-    private final ElementsCollection calendarHeaderLabel = $$(".rdrMonthName");
-    private final SelenideElement calendarPrevButton = $(".rdrPprevButton");
-    private final SelenideElement calendarNextButton = $(".rdrNextButton");
 }

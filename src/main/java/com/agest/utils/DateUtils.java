@@ -1,4 +1,4 @@
-package utils;
+package com.agest.utils;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;

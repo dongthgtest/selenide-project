@@ -1,5 +1,6 @@
 package com.agest.page.agoda;
 
+import com.agest.model.agoda.SearchHotelCriteria;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
@@ -30,18 +31,17 @@ public class BasePage {
         selectedLanguageContainer.should(visible);
     }
 
-    @Step("Search hotel by location - {location}, check-in date - {checkInDate}, check-out date - {checkOutDate}, " +
-            "rooms - {roomCount}, adults - {adultCount}")
-    public void searchHotel(String location, LocalDate checkInDate, LocalDate checkOutDate, int roomCount, int adultCount) {
-        this.searchAndSelectLocation(location);
-        this.findAndSelectDate(checkInDate);
-        this.findAndSelectDate(checkOutDate);
-        this.selectRoomQuantity(roomCount);
-        this.selectAdultQuantity(adultCount);
+    @Step("Search hotel by criteria - {criteria}")
+    public void searchHotel(SearchHotelCriteria criteria) {
+        searchAndSelectLocation(criteria.getDestination());
+        findAndSelectDate(criteria.getCheckInDate());
+        findAndSelectDate(criteria.getCheckOutDate());
+        selectRoomQuantity(criteria.getRoomQuantity());
+        selectAdultQuantity(criteria.getAdultQuantity());
     }
 
     @Step("Search and select location: {location}")
-    public void searchAndSelectLocation(String location) {
+    protected void searchAndSelectLocation(String location) {
         searchInput.should(exist);
         searchInput.click();
         searchInput.setValue(location);
@@ -56,7 +56,7 @@ public class BasePage {
     }
 
     @Step("Find and select date from calendar: {targetDate}")
-    public void findAndSelectDate(LocalDate targetDate) {
+    protected void findAndSelectDate(LocalDate targetDate) {
         LocalDate selectedDay = LocalDate.parse(Objects.requireNonNull(this.selectedDay.getAttribute("data-selenium-date")));
         moveCalendarToCorrectMonth(selectedDay, targetDate);
         this.selectTargetDate(targetDate);
@@ -79,12 +79,12 @@ public class BasePage {
     }
 
     @Step("Select room quantity: {roomCount}")
-    public void selectRoomQuantity(int roomCount) {
+    protected void selectRoomQuantity(int roomCount) {
         this.selectQuantity(roomCount, "occupancy-selector-panel-rooms", "occ-room-value");
     }
 
     @Step("Select adult quantity: {adultCount}")
-    public void selectAdultQuantity(int adultCount) {
+    protected void selectAdultQuantity(int adultCount) {
         this.selectQuantity(adultCount, "occupancy-selector-panel-adult", "occ-adult-value");
     }
 
