@@ -13,13 +13,13 @@ import org.testng.asserts.SoftAssert;
 import java.time.LocalDate;
 
 public class Agoda02 extends TestBase {
-    SoftAssert softAssert;
+    SoftAssert softAssert = new SoftAssert();
     SearchResultPage searchResultPage;
     HomePage homePage = new HomePage();
     SearchHotelCriteria searchCriteria;
     FilterHotelCriteria filterCriteria;
     Pair<Integer, Integer> priceRange = Pair.of(500000, 1000000);
-    String expectedRating = "3";
+    int expectedRating = 3;
     String destination = "Da Nang";
     int expectedHotelsFound = 5;
 
@@ -54,9 +54,15 @@ public class Agoda02 extends TestBase {
         Pair<Integer, Integer> defaultPriceRange = searchResultPage.getFilterPriceRange();
 
         searchResultPage.applyFilter(filterCriteria);
-        searchResultPage.verifyFilterRangeDisplay(priceRange);
+        Pair<Integer, Integer> actualPriceRange = searchResultPage.getFilterPriceRange();
+        softAssert.assertEquals(priceRange, actualPriceRange);
 
         searchResultPage.verifySelectedRatingFilterHighlighted(this.expectedRating);
         searchResultPage.verifyFilteredResult(filterCriteria, expectedHotelsFound);
+
+        searchResultPage.setPriceRange(defaultPriceRange);
+        actualPriceRange = searchResultPage.getFilterPriceRange();
+        softAssert.assertEquals(defaultPriceRange, actualPriceRange);
+        softAssert.assertAll();
     }
 }

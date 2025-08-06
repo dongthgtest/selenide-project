@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.regex.Pattern;
 
 import static com.codeborne.selenide.CollectionCondition.sizeGreaterThan;
 import static com.codeborne.selenide.Condition.*;
@@ -22,8 +23,8 @@ public class SearchResultPage {
     private final SelenideElement maxPriceTextBox = $("#price_box_1");
     private final SelenideElement minPrice = $("#SideBarLocationFilters #price_box_0");
     private final SelenideElement maxPrice = $("#SideBarLocationFilters #price_box_1");
-    // Dynamic selector
-    private final String rating = "#filter-menu-StarRatingWithLuxury ~ ul [data-element-value='%s']";
+
+    private final ElementsCollection ratingFilterElements = $$("[data-component='search-filter-starratingwithluxury']");
 
     public void shouldSearchResultDisplayed(int expectedHotelsFound, String destination) {
         ElementsCollection hotelList = getHotelList();
@@ -82,15 +83,18 @@ public class SearchResultPage {
 
     public void applyFilter(FilterHotelCriteria criteria) {
         if (criteria.getPriceRange() != null) {
-            setPriceFilter(minPriceTextBox, criteria.getPriceRange().getLeft());
-            setPriceFilter(maxPriceTextBox, criteria.getPriceRange().getRight());
+            this.setPriceRange(criteria.getPriceRange());
         }
         if (criteria.getRating() != null) {
-            String dynamicRatingSelector = String.format("//label[@data-component='search-filter-starratingwithluxury']" +
-                    "//div[span[div[div[span[contains(text(),'%s-')]]]]]", criteria.getRating());
-            SelenideElement ratingFilter = $x(dynamicRatingSelector);
+            SelenideElement ratingFilter = ratingFilterElements
+                    .findBy(attribute("data-element-value", String.valueOf(criteria.getRating())));
             ratingFilter.click();
         }
+    }
+
+    public void setPriceRange(Pair<Integer, Integer> priceRange) {
+        setPriceFilter(minPriceTextBox, priceRange.getLeft());
+        setPriceFilter(maxPriceTextBox, priceRange.getRight());
     }
 
     @Step("Set minimum price to {price}")
@@ -113,20 +117,12 @@ public class SearchResultPage {
         return Integer.parseInt(priceText);
     }
 
-    @Step("Verify filter price range is displayed correctly")
-    public void verifyFilterRangeDisplay(Pair<Integer, Integer> expectedPriceRange) {
-        Pair<Integer, Integer> actualPriceRange = getFilterPriceRange();
-        if (!actualPriceRange.equals(expectedPriceRange)) {
-            throw new AssertionError("Expected price range " + expectedPriceRange + " but got " + actualPriceRange);
-        }
-    }
-
     @Step("Verify {rating} star rating filter is highlighted")
-    public void verifySelectedRatingFilterHighlighted(String rating) {
-        SelenideElement ratingFilter = $(String.format(this.rating, rating)).$("input");
-        if (!ratingFilter.isSelected()) {
-            throw new AssertionError("Rating filter for " + rating + " stars is not highlighted.");
-        }
+    public void verifySelectedRatingFilterHighlighted(int rating) {
+        SelenideElement ratingFilter = ratingFilterElements
+                .findBy(attribute("data-element-value", String.valueOf(rating)))
+                .find("input");
+        ratingFilter.shouldBe(selected);
     }
 
     private double getHotelPrice(SelenideElement hotel) {
@@ -141,33 +137,38 @@ public class SearchResultPage {
         return priceRange.getLeft() < hotelPrice && hotelPrice < priceRange.getRight();
     }
 
-    private boolean isHotelRatingMatches(SelenideElement hotel, String rating) {
+    private boolean isHotelRatingMatches(SelenideElement hotel, int rating) {
         String hotelRating = hotel
-                .$x(String.format("//span[data-testid='rating-container']//span[contains(text(),'%s stars out of 5')]", rating))
+                .$x(String.format(".//div[@data-testid='rating-container']//span", rating))
                 .getText();
-        return hotelRating.contains(rating);
+        Pattern pattern = Pattern.compile("^\\d(\\.\\d)?");
+        var matcher = pattern.matcher(hotelRating);
+        matcher.find();
+        float result = Float.parseFloat(matcher.group(0));
+        return ((int) result) == rating;
     }
 
-    private boolean isHotelDestinationMatches(SelenideElement hotel, String destination) {
-        String hotelDestination = hotel.$("//div[button[span[contains(@label,'Da Nang')]]]").getText();
-        return hotelDestination.contains(destination);
+    private void shouldHotelDestinationMatches(SelenideElement hotel, String destination) {
+        SelenideElement hotelDestination = hotel.$("button[data-selenium='area-city-text'] span");
+        hotelDestination.shouldHave(partialText(destination));
     }
 
     @Step("Verify the result filtered by criteria: {criteria}")
     public void verifyFilteredResult(FilterHotelCriteria criteria, int expectedHotels) {
         ElementsCollection hotelList = getHotelList();
         hotelList.shouldHave(sizeGreaterThan(expectedHotels));
-        int index = 0;
-        for (SelenideElement hotel : hotelList) {
-            double hotelPrice = getHotelPrice(hotel);
-            if (isHotelPriceInRange(hotel, criteria.getPriceRange())
-//                    && isHotelRatingMatches(hotel, criteria.getRating())
-                    && isHotelDestinationMatches(hotel, criteria.getDestination())) {
-                index++;
+        ElementsCollection resultHotels = hotelList.first(5);
+        for (SelenideElement hotel : resultHotels) {
+            if (this.getHotelPriceIfPresent(hotel).isEmpty()) {
+                continue;
             }
-            if (index >= 5) {
-                break;
+            if (criteria.getPriceRange() != null) {
+                isHotelPriceInRange(hotel, criteria.getPriceRange());
             }
+            if (criteria.getRating() != null) {
+                isHotelRatingMatches(hotel, criteria.getRating());
+            }
+            shouldHotelDestinationMatches(hotel, criteria.getDestination());
         }
     }
 }
