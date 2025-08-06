@@ -8,14 +8,20 @@ import com.agest.utils.DateUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+import org.testng.asserts.SoftAssert;
 
 import java.time.LocalDate;
 
 public class Agoda02 extends TestBase {
+    SoftAssert softAssert;
     SearchResultPage searchResultPage;
     HomePage homePage = new HomePage();
     SearchHotelCriteria searchCriteria;
     FilterHotelCriteria filterCriteria;
+    Pair<Integer, Integer> priceRange = Pair.of(500000, 1000000);
+    String expectedRating = "3";
+    String destination = "Da Nang";
+    int expectedHotelsFound = 5;
 
     @BeforeMethod
     public void preCondition() {
@@ -23,7 +29,7 @@ public class Agoda02 extends TestBase {
         LocalDate checkOutDate = checkInDate.plusDays(3);
 
         searchCriteria = SearchHotelCriteria.builder()
-                .destination("Da Nang")
+                .destination(destination)
                 .checkInDate(checkInDate)
                 .checkOutDate(checkOutDate)
                 .roomQuantity(2)
@@ -32,11 +38,10 @@ public class Agoda02 extends TestBase {
 
         filterCriteria = FilterHotelCriteria
                 .builder()
-                .priceRange(Pair.of(500000, 1000000))
-                .rating("3")
+                .destination(destination)
+                .priceRange(priceRange)
+                .rating(expectedRating)
                 .build();
-
-        int expectedHotelsFound = 5;
 
         homePage.searchHotel(searchCriteria);
 
@@ -46,6 +51,12 @@ public class Agoda02 extends TestBase {
 
     @Test
     public void verifySearchAndFilterHotelSuccessfully() {
+        Pair<Integer, Integer> defaultPriceRange = searchResultPage.getFilterPriceRange();
+
         searchResultPage.applyFilter(filterCriteria);
+        searchResultPage.verifyFilterRangeDisplay(priceRange);
+
+        searchResultPage.verifySelectedRatingFilterHighlighted(this.expectedRating);
+        searchResultPage.verifyFilteredResult(filterCriteria, expectedHotelsFound);
     }
 }
