@@ -6,6 +6,7 @@ import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
 import org.apache.commons.lang3.tuple.Pair;
+import org.testng.Assert;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -113,7 +114,14 @@ public class SearchResultPage {
 
     @Step("Get price value of {element}")
     private int getFilterPriceValue(SelenideElement element) {
-        String priceText = Objects.requireNonNull(element.getAttribute("value")).replaceAll("\\D", "");
+        String value = element.getAttribute("value");
+        if (value == null || value.trim().isEmpty()) {
+            throw new IllegalArgumentException("Price value is missing for element: " + element);
+        }
+        String priceText = value.replaceAll("\\D", "");
+        if (priceText.isEmpty()) {
+            throw new NumberFormatException("No digits found in price value: " + value);
+        }
         return Integer.parseInt(priceText);
     }
 
@@ -139,7 +147,7 @@ public class SearchResultPage {
 
     private boolean isHotelRatingMatches(SelenideElement hotel, int rating) {
         String hotelRating = hotel
-                .$x(String.format(".//div[@data-testid='rating-container']//span", rating))
+                .$x(".//div[@data-testid='rating-container']//span")
                 .getText();
         Pattern pattern = Pattern.compile("^\\d(\\.\\d)?");
         var matcher = pattern.matcher(hotelRating);
@@ -163,10 +171,18 @@ public class SearchResultPage {
                 continue;
             }
             if (criteria.getPriceRange() != null) {
-                isHotelPriceInRange(hotel, criteria.getPriceRange());
+                Assert.assertTrue(
+                        isHotelPriceInRange(hotel, criteria.getPriceRange()),
+                        String.format("Hotel price %.2f is not in range [%d, %d]",
+                                getHotelPrice(hotel),
+                                criteria.getPriceRange().getLeft(),
+                                criteria.getPriceRange().getRight()
+                        )
+                );
             }
             if (criteria.getRating() != null) {
-                isHotelRatingMatches(hotel, criteria.getRating());
+                Assert.assertTrue(isHotelRatingMatches(hotel, criteria.getRating()),
+                        "Hotel rating does not match expected value");
             }
             shouldHotelDestinationMatches(hotel, criteria.getDestination());
         }
