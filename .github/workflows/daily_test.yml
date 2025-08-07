@@ -20,6 +20,7 @@ jobs:
           cache: 'maven'
 
       - name: Run tests
+        working-directory: .
         run: |
           mvn clean test \
             -DsuiteXmlFile=src/test/resources/suite/TestCases.xml \
@@ -44,6 +45,7 @@ jobs:
             echo "No Allure results found"
             mkdir -p allure-results
           fi
+
       - name: Upload Allure Report
         if: always()
         uses: actions/upload-artifact@v4
@@ -53,7 +55,7 @@ jobs:
 
       - name: Generate Allure HTML Report
         if: always() && steps.check_results.outputs.results_exist == 'true'
-        run: mvn allure:report
+        run: mvn allure:report -Dallure.results.directory=allure-results
 
       - name: Create fallback report for failed tests
         if: always() && steps.check_results.outputs.results_exist == 'false'
@@ -89,33 +91,33 @@ jobs:
               </div>
               <div class="info">
                   <h3>Execution Details:</h3>
-                  <p><strong>Date:</strong> 2025-07-03 10:25:52 UTC</p>
-                  <p><strong>Repository:</strong> dongthgtest/selenide-project</p>
+                  <p><strong>Date:</strong> ${{ github.run_started_at }}</p>
+                  <p><strong>Repository:</strong> ${{ github.repository }}</p>
                   <p><strong>Workflow:</strong> Daily Test</p>
               </div>
           </body>
           </html>
           EOF
+
       - name: Read Allure HTML for Email
         id: allure_report_html
         if: always()
         run: |
-          echo "content<<EOF" >> $GITHUB_OUTPUT
+          echo "html_body<<EOF" >> $GITHUB_OUTPUT
           cat target/site/allure-maven-plugin/index.html >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
+
       - name: Send Allure Report via Email
         if: always()
         uses: dawidd6/action-send-mail@v6
-        env:
-          RECIPIENT_EMAIL: ${{ secrets.RECIPIENT_EMAIL }}
         with:
           server_address: smtp.gmail.com
           server_port: 587
+          secure: true
           username: ${{ secrets.EMAIL_USERNAME }}
           password: ${{ secrets.EMAIL_PASSWORD }}
           subject: "Allure Test Report"
           to: ${{ secrets.RECIPIENT_EMAIL }}
           from: noreply-automation@dongthgtest.com
-          content_type: text/html
-          body: ${{ steps.allure_report_html.outputs.content }}
+          html_body: ${{ steps.allure_report_html.outputs.html_body }}
           attachments: target/site/allure-maven-plugin/index.html
