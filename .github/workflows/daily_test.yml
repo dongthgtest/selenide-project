@@ -30,16 +30,16 @@ jobs:
       - name: Run tests
         working-directory: .
         run: |
-          mvn clean test \
+          xvfb-run --auto-servernum mvn clean test \
             -DsuiteXmlFile=src/test/resources/suite/TestCases.xml \
             -Dselenide.baseUrl=https://www.agoda.com \
             -Dselenide.browser=chrome \
+            -Dselenide.headless=true \
             -Dselenide.reportsFolder=allure-results \
             -Dselenide.browserSize=1920x1080 \
             -Dselenide.timeout=10000 \
             -Dselenide.retries=2 \
             -Dselenide.pageLoadStrategy=eager
-        continue-on-error: true
 
       - name: Upload Allure Report
         if: always()
@@ -53,7 +53,7 @@ jobs:
         run: mvn allure:report
 
       - name: Create fallback report for failed tests
-        if: always() && steps.check_results.outputs.results_exist == 'false'
+        if: always()
         run: |
           mkdir -p target/site/allure-maven-plugin
           cat > target/site/allure-maven-plugin/index.html << 'EOF'
