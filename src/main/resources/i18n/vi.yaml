@@ -24,3 +24,9 @@ vietjet:
     nextButton: Đi tiếp
   passengerInfo:
     title: Thông tin hành khách
+agoda:
+  facility:
+    SWIMMING_POOL: Bể bơi
+    INTERNET: Internet
+    CAR_PARK: Bãi để xe
+    AIRPORT_TRANSFER: Đưa đón sân bay
