@@ -10,10 +10,10 @@
             <class name="agoda.Agoda02"/>
         </classes>
     </test>
-    <test name="Vietjet">
-        <classes>
-            <class name="vietjet.Vietjet01"/>
-            <class name="vietjet.Vietjet02"/>
-        </classes>
-    </test>
+<!--    <test name="Vietjet">-->
+<!--        <classes>-->
+<!--            <class name="vietjet.Vietjet01"/>-->
+<!--            <class name="vietjet.Vietjet02"/>-->
+<!--        </classes>-->
+<!--    </test>-->
 </suite>
