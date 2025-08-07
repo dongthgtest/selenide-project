@@ -40,7 +40,9 @@ public class SearchResultPage {
     }
 
     public ElementsCollection getHotelList() {
-        return $$x("//li[@data-selenium='hotel-item']");
+        ElementsCollection hotels = $$x("//li[@data-selenium='hotel-item']");
+        hotels.shouldHave(sizeGreaterThan(0));
+        return hotels;
     }
 
     public void sortByLowestPrice() {
