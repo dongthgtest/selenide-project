@@ -30,7 +30,7 @@ jobs:
       - name: Run tests
         working-directory: .
         run: |
-          xvfb-run --auto-servernum mvn clean test \
+          mvn clean test \
             -DsuiteXmlFile=src/test/resources/suite/TestCases.xml \
             -Dselenide.baseUrl=https://www.agoda.com \
             -Dselenide.browser=chrome \
