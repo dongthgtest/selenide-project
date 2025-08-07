@@ -27,6 +27,9 @@ jobs:
           java-version: '21'
           cache: 'maven'
 
+      - name: Install dependencies
+        run: sudo apt install -y libxss1 libappindicator3-1 libindicator7
+
       - name: Run tests
         working-directory: .
         run: |
