@@ -34,25 +34,12 @@ jobs:
             -DsuiteXmlFile=src/test/resources/suite/TestCases.xml \
             -Dselenide.baseUrl=https://www.agoda.com \
             -Dselenide.browser=chrome \
-            -Dselenide.headless=true \
+            -Dselenide.reportsFolder=allure-results \
             -Dselenide.browserSize=1920x1080 \
             -Dselenide.timeout=10000 \
             -Dselenide.retries=2 \
             -Dselenide.pageLoadStrategy=eager
         continue-on-error: true
-
-      - name: Check if Allure results exist
-        id: check_results
-        if: always()
-        run: |
-          if [ -d "allure-results" ] && [ "$(ls -A allure-results)" ]; then
-            echo "results_exist=true" >> $GITHUB_OUTPUT
-            echo "Allure results found"
-          else
-            echo "results_exist=false" >> $GITHUB_OUTPUT
-            echo "No Allure results found"
-            mkdir -p allure-results
-          fi
 
       - name: Upload Allure Report
         if: always()
@@ -62,8 +49,8 @@ jobs:
           path: allure-results
 
       - name: Generate Allure HTML Report
-        if: always() && steps.check_results.outputs.results_exist == 'true'
-        run: mvn allure:report -Dallure.results.directory=allure-results
+        if: always()
+        run: mvn allure:report
 
       - name: Create fallback report for failed tests
         if: always() && steps.check_results.outputs.results_exist == 'false'
