@@ -27,6 +27,7 @@ public class SearchResultPage {
 
     private final ElementsCollection ratingFilterElements = $$("[data-component='search-filter-starratingwithluxury']");
 
+    @Step("Verify search result page is displayed {expectedHotelsFound} hotels with destination - {destination}")
     public void shouldSearchResultDisplayed(int expectedHotelsFound, String destination) {
         ElementsCollection hotelList = getHotelList();
         hotelList.shouldHave(sizeGreaterThan(expectedHotelsFound));
@@ -49,6 +50,7 @@ public class SearchResultPage {
         sortLowestPriceButton.shouldBe(visible).scrollIntoCenter().click();
     }
 
+    @Step("Verify hotels are sorted by lowest price")
     public void shouldSortByLowestPrice(int expectedHotels) {
         sortLowestPriceButton.shouldHave(attribute("aria-current", "true"));
         List<Integer> prices = new ArrayList<>();
@@ -84,6 +86,7 @@ public class SearchResultPage {
         return Optional.empty();
     }
 
+    @Step("Apply filter criteria: {criteria}")
     public void applyFilter(FilterHotelCriteria criteria) {
         if (criteria.getPriceRange() != null) {
             this.setPriceRange(criteria.getPriceRange());
@@ -95,6 +98,7 @@ public class SearchResultPage {
         }
     }
 
+    @Step("Set price range to {priceRange}")
     public void setPriceRange(Pair<Integer, Integer> priceRange) {
         setPriceFilter(minPriceTextBox, priceRange.getLeft());
         setPriceFilter(maxPriceTextBox, priceRange.getRight());
@@ -135,6 +139,7 @@ public class SearchResultPage {
         ratingFilter.shouldBe(selected);
     }
 
+    @Step("Get the price of the hotel")
     private double getHotelPrice(SelenideElement hotel) {
         SelenideElement price = hotel.$("span[data-selenium='display-price']");
         price.shouldBe(Condition.visible).scrollIntoView(true);
@@ -142,11 +147,13 @@ public class SearchResultPage {
         return Double.parseDouble(text);
     }
 
+    @Step("Check if hotel price is in range {priceRange}")
     private boolean isHotelPriceInRange(SelenideElement hotel, Pair<Integer, Integer> priceRange) {
         double hotelPrice = getHotelPrice(hotel);
         return priceRange.getLeft() < hotelPrice && hotelPrice < priceRange.getRight();
     }
 
+    @Step("Check if hotel rating matches {rating}")
     private boolean isHotelRatingMatches(SelenideElement hotel, int rating) {
         String hotelRating = hotel
                 .$x(".//div[@data-testid='rating-container']//span")
@@ -158,6 +165,7 @@ public class SearchResultPage {
         return ((int) result) == rating;
     }
 
+    @Step("Check if hotel destination matches {destination}")
     private void shouldHotelDestinationMatches(SelenideElement hotel, String destination) {
         SelenideElement hotelDestination = hotel.$("button[data-selenium='area-city-text'] span");
         hotelDestination.shouldHave(partialText(destination));
