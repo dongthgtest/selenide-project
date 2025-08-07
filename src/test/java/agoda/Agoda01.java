@@ -26,7 +26,6 @@ public class Agoda01 extends TestBase {
                 .roomQuantity(2)
                 .adultQuantity(4)
                 .build();
-
         expectedHotelsFound = 5;
 
         homePage.searchHotel(criteria);

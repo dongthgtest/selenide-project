@@ -12,7 +12,7 @@ includes dependencies for logging, reporting, and test execution with TestNG, Al
 - [x] Parallel/distributed testing
 - [x] Cross browsers testing: Chrome, Edge
 - [x] Selenium Grid/Shard
-- [ ] Test cases: VJ, Agoda, TBD (3/8 - 1 Agoda tests, 2 VJ tests)
+- [ ] Test cases: VJ, Agoda, TBD (4/8 - 2 Agoda tests, 2 VJ tests)
 - [ ] CI: Schedule test, send email notification result with summary
 
 ### Use Cases
