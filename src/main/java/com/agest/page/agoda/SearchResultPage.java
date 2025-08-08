@@ -30,11 +30,9 @@ public class SearchResultPage implements IPage {
     private final SelenideElement maxPrice = $("#SideBarLocationFilters #price_box_1");
 
     private final ElementsCollection ratingFilterElements = $$("[data-component='search-filter-starratingwithluxury']");
-    private final ElementsCollection facilityFilterElements = $$("label[data-component=search-filter-hotelfacilities]");
     private final ElementsCollection filterItemLabel = $$("span[data-selenium=filter-item-text]");
-    private final SelenideElement skeleton = $(".property-list-placeholder");
-    private final SelenideElement reviewScoreLabel = $("[data-element-name=property-card-review]");
 
+    @Step("Verify that search results are displayed")
     public void shouldSearchResultDisplayed(int expectedHotelsFound, String destination) {
         ElementsCollection hotelList = getHotelList();
         hotelList.shouldHave(sizeGreaterThan(expectedHotelsFound));
@@ -55,6 +53,7 @@ public class SearchResultPage implements IPage {
         sortLowestPriceButton.shouldBe(visible).scrollIntoCenter().click();
     }
 
+    @Step("Verify that hotels are sorted by lowest price")
     public void shouldSortByLowestPrice(int expectedHotels) {
         sortLowestPriceButton.shouldHave(attribute("aria-current", "true"));
         List<Integer> prices = new ArrayList<>();
@@ -90,6 +89,8 @@ public class SearchResultPage implements IPage {
         return Optional.empty();
     }
 
+    @Step("Apply filter with criteria: destination={criteria.destination}, " +
+            "priceRange={criteria.priceRange}, rating={criteria.rating}")
     public void applyFilter(FilterHotelCriteria criteria) {
         if (criteria.getPriceRange() != null) {
             this.setPriceRange(criteria.getPriceRange());
@@ -101,6 +102,7 @@ public class SearchResultPage implements IPage {
         }
     }
 
+    @Step("Set price range to {priceRange}")
     public void setPriceRange(Pair<Integer, Integer> priceRange) {
         setPriceFilter(minPriceTextBox, priceRange.getLeft());
         setPriceFilter(maxPriceTextBox, priceRange.getRight());
@@ -141,6 +143,7 @@ public class SearchResultPage implements IPage {
         ratingFilter.shouldBe(selected);
     }
 
+    @Step("Filter hotels by facilities: {facilities}")
     public void filterByFacilities(Facility... facilities) {
         for (Facility facility : facilities) {
             String facilityName = i18n.t("agoda.facility." + facility.name());
@@ -151,7 +154,6 @@ public class SearchResultPage implements IPage {
                     .find("input")
                     .scrollIntoView(true)
                     .click();
-//            skeleton.shouldBe(hidden, Duration.ofSeconds(30));
         }
     }
 
@@ -218,6 +220,7 @@ public class SearchResultPage implements IPage {
                 .click();
     }
 
+    @Step("Get hotel name at index {index}")
     public String getHotelName(int index) {
         return getHotelList()
                 .shouldHave(sizeGreaterThanOrEqual(index))
@@ -226,6 +229,7 @@ public class SearchResultPage implements IPage {
                 .$("[data-selenium=hotel-name]").getText();
     }
 
+    @Step("Get hotel reviews at index {index}")
     public List<Pair<Review, Float>> getHotelReviews(int index) {
         getHotelList()
                 .get(index - 1)
