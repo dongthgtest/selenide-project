@@ -12,7 +12,7 @@ includes dependencies for logging, reporting, and test execution with TestNG, Al
 - [x] Parallel/distributed testing
 - [x] Cross browsers testing: Chrome, Edge
 - [x] Selenium Grid/Shard
-- [ ] Test cases: VJ, Agoda, TBD (4/8 - 2 Agoda tests, 2 VJ tests)
+- [ ] Test cases: VJ, Agoda, TBD (5/8 - 3 Agoda tests, 2 VJ tests)
 - [ ] CI: Schedule test, send email notification result with summary
 
 ### Use Cases
@@ -22,7 +22,7 @@ includes dependencies for logging, reporting, and test execution with TestNG, Al
 - [x] Group tests by purposes: regression, smoke/sanity test
 - [x] Source control practice: branch
 - [ ] Switch test environment: dev, stg (dev: agoda.com, stg: vj.com)
-- [ ] Wrap custom controls
+- [x] Wrap custom controls
 - [ ] Data driven testing: test data is in excel file
 - [ ] Working with Shadow DOM
 - [ ] Compare with another FW e.g. Playwright
