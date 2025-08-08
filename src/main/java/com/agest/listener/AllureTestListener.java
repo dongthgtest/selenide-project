@@ -1,42 +1,49 @@
 package com.agest.listener;
 
-import com.codeborne.selenide.WebDriverRunner;
-import com.codeborne.selenide.logevents.LogEvent;
-import com.codeborne.selenide.logevents.SelenideLogger;
 import io.qameta.allure.Allure;
-import io.qameta.allure.selenide.AllureSelenide;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.TakesScreenshot;
+import org.testng.IAnnotationTransformer;
+import org.testng.ITestContext;
 import org.testng.ITestListener;
 import org.testng.ITestResult;
+import org.testng.annotations.ITestAnnotation;
 
 import java.io.ByteArrayInputStream;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
+import java.util.Objects;
 
-public class AllureTestListener extends AllureSelenide implements ITestListener {
-    public AllureTestListener() {
-        SelenideLogger.addListener("AllureSelenide", this);
+import static com.codeborne.selenide.WebDriverRunner.getWebDriver;
+
+public class AllureTestListener implements ITestListener, IAnnotationTransformer {
+    @Override
+    public void onStart(ITestContext context) {
+        AllureManager.setupAllureReporting();
     }
 
     @Override
-    public void afterEvent(LogEvent event) {
-        if (event.getStatus().equals(LogEvent.EventStatus.FAIL)) {
-            Allure.addAttachment(
-                    "Screenshot on failure",
-                    new ByteArrayInputStream(((TakesScreenshot) WebDriverRunner.getWebDriver())
-                            .getScreenshotAs(OutputType.BYTES))
-            );
-        }
-        super.afterEvent(event);
+    public void onFinish(ITestContext context) {
+    }
+
+    @Override
+    public void onTestStart(ITestResult result) {
+    }
+
+    @Override
+    public void onTestSuccess(ITestResult result) {
     }
 
     @Override
     public void onTestFailure(ITestResult result) {
-        if (WebDriverRunner.hasWebDriverStarted()) {
-            Allure.addAttachment(
-                    "Screenshot on test failure",
-                    new ByteArrayInputStream(((TakesScreenshot) WebDriverRunner.getWebDriver())
-                            .getScreenshotAs(OutputType.BYTES))
-            );
-        }
+        Allure.addAttachment("screenshot", "image/png", new ByteArrayInputStream(AllureManager.takeScreenshot()), "png");
+        Allure.addAttachment("Page HTML", "text/html", Objects.requireNonNull(getWebDriver().getPageSource()), ".html");
+    }
+
+    @Override
+    public void onTestSkipped(ITestResult result) {
+    }
+
+    @Override
+    public void transform(ITestAnnotation annotation, Class testClass, Constructor testConstructor, Method testMethod) {
+        annotation.setRetryAnalyzer(RetryAnalyzer.class);
     }
 }
