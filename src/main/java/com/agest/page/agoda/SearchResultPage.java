@@ -35,6 +35,7 @@ public class SearchResultPage implements IPage {
     private final SelenideElement skeleton = $(".property-list-placeholder");
     private final SelenideElement reviewScoreLabel = $("[data-element-name=property-card-review]");
 
+    @Step("Verify search result is displayed for destination: {destination}")
     public void shouldSearchResultDisplayed(int expectedHotelsFound, String destination) {
         ElementsCollection hotelList = getHotelList();
         hotelList.shouldHave(sizeGreaterThan(expectedHotelsFound));
@@ -55,6 +56,7 @@ public class SearchResultPage implements IPage {
         sortLowestPriceButton.shouldBe(visible).scrollIntoCenter().click();
     }
 
+    @Step("Verify hotels are sorted by lowest price")
     public void shouldSortByLowestPrice(int expectedHotels) {
         sortLowestPriceButton.shouldHave(attribute("aria-current", "true"));
         List<Integer> prices = new ArrayList<>();
@@ -90,6 +92,8 @@ public class SearchResultPage implements IPage {
         return Optional.empty();
     }
 
+    @Step("Apply filter with criteria - destination: {criteria.getDestination()}, " +
+            "price range: {criteria.getPriceRange()}, rating: {criteria.getRating()}")
     public void applyFilter(FilterHotelCriteria criteria) {
         if (criteria.getPriceRange() != null) {
             this.setPriceRange(criteria.getPriceRange());
@@ -101,6 +105,7 @@ public class SearchResultPage implements IPage {
         }
     }
 
+    @Step("Set price range to {priceRange}")
     public void setPriceRange(Pair<Integer, Integer> priceRange) {
         setPriceFilter(minPriceTextBox, priceRange.getLeft());
         setPriceFilter(maxPriceTextBox, priceRange.getRight());
@@ -141,6 +146,7 @@ public class SearchResultPage implements IPage {
         ratingFilter.shouldBe(selected);
     }
 
+    @Step("Filter by facilities: {facilities}")
     public void filterByFacilities(Facility... facilities) {
         for (Facility facility : facilities) {
             String facilityName = i18n.t("agoda.facility." + facility.name());
@@ -218,6 +224,7 @@ public class SearchResultPage implements IPage {
                 .click();
     }
 
+    @Step("Get hotel name at index {index}")
     public String getHotelName(int index) {
         return getHotelList()
                 .shouldHave(sizeGreaterThanOrEqual(index))
@@ -226,6 +233,7 @@ public class SearchResultPage implements IPage {
                 .$("[data-selenium=hotel-name]").getText();
     }
 
+    @Step("Get hotel price at index {index}")
     public List<Pair<Review, Float>> getHotelReviews(int index) {
         getHotelList()
                 .get(index - 1)

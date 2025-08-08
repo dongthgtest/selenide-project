@@ -5,11 +5,13 @@ import com.agest.constant.agoda.Review;
 import com.agest.page.IPage;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
+import io.qameta.allure.Step;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.List;
 
-import static com.codeborne.selenide.CollectionCondition.*;
+import static com.codeborne.selenide.CollectionCondition.anyMatch;
+import static com.codeborne.selenide.CollectionCondition.sizeLessThanOrEqual;
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
@@ -21,14 +23,17 @@ public class HotelDetailPage implements IPage {
     private SelenideElement reviewTab = $("#hotelNavBar [data-element-name=customer-reviews-panel-navbar-menu]");
     private SelenideElement reviewSection = $(".Review-traveler-Cell");
 
+    @Step("Verify hotel name is {expectedHotelName}")
     public void hotelNameShouldBe(String expectedHotelName) {
         hotelNameLabel.shouldHave(exactText(expectedHotelName));
     }
 
+    @Step("Verify hotel address contains {expectedAddress}")
     public void hotelAddressShouldContain(String expectedAddress) {
         hotelAddressLabel.shouldHave(text(expectedAddress));
     }
 
+    @Step("Verify facilities are displayed with {expectedFacilities}")
     public void facilityShouldContain(Facility expectedFacility) {
         facilityLabels.should(
                 anyMatch("Facility should be present",
@@ -36,13 +41,14 @@ public class HotelDetailPage implements IPage {
         );
     }
 
+    @Step("Verify review scores are displayed with {reviews}")
     public void verifyReviewScores(List<Pair<Review, Float>> reviews) {
         clickReviewTab();
         SelenideElement reviewSection = $$("[data-element-name=review-score-details]")
                 .shouldHave(sizeLessThanOrEqual(2))
                 .get(0);
         for (Pair<Review, Float> review : reviews) {
-           reviewSection
+            reviewSection
                     .$$x(".//span")
                     .findBy(text(i18n.t("agoda.review." + review.getLeft().name())))
                     .should(exist)
