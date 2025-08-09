@@ -25,3 +25,15 @@ vietjet:
     nextButton: Continue
   passengerInfo:
     title: Passenger information
+agoda:
+  facility:
+    SWIMMING_POOL: Swimming pool
+    INTERNET: Internet
+    CAR_PARK: Car park
+    AIRPORT_TRANSFER: Airport transfer
+  review:
+    CLEANLINESS: Cleanliness
+    FACILITIES: Facilities
+    LOCATION: Location
+    SERVICE: Service
+    VALUE_FOR_MONEY: Value for money
