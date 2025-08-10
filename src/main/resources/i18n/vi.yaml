@@ -30,3 +30,9 @@ agoda:
     INTERNET: Internet
     CAR_PARK: Bãi để xe
     AIRPORT_TRANSFER: Đưa đón sân bay
+  review:
+    CLEANLINESS: Độ sạch sẽ
+    FACILITIES: Cơ sở vật chất
+    LOCATION: Vị trí
+    SERVICE: Dịch vụ
+    VALUE_FOR_MONEY: Đáng giá tiền

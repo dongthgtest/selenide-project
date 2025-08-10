@@ -9,7 +9,8 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.List;
 
-import static com.codeborne.selenide.CollectionCondition.*;
+import static com.codeborne.selenide.CollectionCondition.anyMatch;
+import static com.codeborne.selenide.CollectionCondition.sizeLessThanOrEqual;
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
@@ -19,7 +20,7 @@ public class HotelDetailPage implements IPage {
     private SelenideElement hotelAddressLabel = $("[data-selenium=hotel-address-map]");
     private ElementsCollection facilityLabels = $$("#abouthotel-features div[data-element-name=property-feature] span");
     private SelenideElement reviewTab = $("#hotelNavBar [data-element-name=customer-reviews-panel-navbar-menu]");
-    private SelenideElement reviewSection = $(".Review-traveler-Cell");
+    private ElementsCollection reviewSections = $$("[data-element-name=review-score-details]");
 
     public void hotelNameShouldBe(String expectedHotelName) {
         hotelNameLabel.shouldHave(exactText(expectedHotelName));
@@ -38,11 +39,11 @@ public class HotelDetailPage implements IPage {
 
     public void verifyReviewScores(List<Pair<Review, Float>> reviews) {
         clickReviewTab();
-        SelenideElement reviewSection = $$("[data-element-name=review-score-details]")
+        SelenideElement reviewSection = this.reviewSections
                 .shouldHave(sizeLessThanOrEqual(2))
                 .get(0);
         for (Pair<Review, Float> review : reviews) {
-           reviewSection
+            reviewSection
                     .$$x(".//span")
                     .findBy(text(i18n.t("agoda.review." + review.getLeft().name())))
                     .should(exist)
