@@ -1,6 +1,9 @@
 package com.agest.page.agoda;
 
+import com.agest.constant.agoda.Facility;
+import com.agest.constant.agoda.Review;
 import com.agest.model.agoda.FilterHotelCriteria;
+import com.agest.page.IPage;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
@@ -10,15 +13,16 @@ import org.testng.Assert;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.regex.Pattern;
 
 import static com.codeborne.selenide.CollectionCondition.sizeGreaterThan;
+import static com.codeborne.selenide.CollectionCondition.sizeGreaterThanOrEqual;
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.*;
+import static java.lang.Float.parseFloat;
 
-public class SearchResultPage {
+public class SearchResultPage implements IPage {
     private final SelenideElement sortLowestPriceButton = $x("//button[@data-element-name='search-sort-price']");
     private final SelenideElement minPriceTextBox = $("#price_box_0");
     private final SelenideElement maxPriceTextBox = $("#price_box_1");
@@ -26,7 +30,9 @@ public class SearchResultPage {
     private final SelenideElement maxPrice = $("#SideBarLocationFilters #price_box_1");
 
     private final ElementsCollection ratingFilterElements = $$("[data-component='search-filter-starratingwithluxury']");
+    private final ElementsCollection filterItemLabel = $$("span[data-selenium=filter-item-text]");
 
+    @Step("Verify that search results are displayed")
     public void shouldSearchResultDisplayed(int expectedHotelsFound, String destination) {
         ElementsCollection hotelList = getHotelList();
         hotelList.shouldHave(sizeGreaterThan(expectedHotelsFound));
@@ -39,7 +45,7 @@ public class SearchResultPage {
         }
     }
 
-    public ElementsCollection getHotelList() {
+    protected ElementsCollection getHotelList() {
         return $$x("//li[@data-selenium='hotel-item']");
     }
 
@@ -47,6 +53,7 @@ public class SearchResultPage {
         sortLowestPriceButton.shouldBe(visible).scrollIntoCenter().click();
     }
 
+    @Step("Verify that hotels are sorted by lowest price")
     public void shouldSortByLowestPrice(int expectedHotels) {
         sortLowestPriceButton.shouldHave(attribute("aria-current", "true"));
         List<Integer> prices = new ArrayList<>();
@@ -82,6 +89,8 @@ public class SearchResultPage {
         return Optional.empty();
     }
 
+    @Step("Apply filter with criteria: destination={criteria.destination}, " +
+            "priceRange={criteria.priceRange}, rating={criteria.rating}")
     public void applyFilter(FilterHotelCriteria criteria) {
         if (criteria.getPriceRange() != null) {
             this.setPriceRange(criteria.getPriceRange());
@@ -93,6 +102,7 @@ public class SearchResultPage {
         }
     }
 
+    @Step("Set price range to {priceRange}")
     public void setPriceRange(Pair<Integer, Integer> priceRange) {
         setPriceFilter(minPriceTextBox, priceRange.getLeft());
         setPriceFilter(maxPriceTextBox, priceRange.getRight());
@@ -133,6 +143,20 @@ public class SearchResultPage {
         ratingFilter.shouldBe(selected);
     }
 
+    @Step("Filter hotels by facilities: {facilities}")
+    public void filterByFacilities(Facility... facilities) {
+        for (Facility facility : facilities) {
+            String facilityName = i18n.t("agoda.facility." + facility.name());
+            filterItemLabel
+                    .findBy(text(facilityName))
+                    .should(visible)
+                    .ancestor("label")
+                    .find("input")
+                    .scrollIntoView(true)
+                    .click();
+        }
+    }
+
     private double getHotelPrice(SelenideElement hotel) {
         SelenideElement price = hotel.$("span[data-selenium='display-price']");
         price.shouldBe(Condition.visible).scrollIntoView(true);
@@ -152,7 +176,7 @@ public class SearchResultPage {
         Pattern pattern = Pattern.compile("^\\d(\\.\\d)?");
         var matcher = pattern.matcher(hotelRating);
         matcher.find();
-        float result = Float.parseFloat(matcher.group(0));
+        float result = parseFloat(matcher.group(0));
         return ((int) result) == rating;
     }
 
@@ -186,5 +210,40 @@ public class SearchResultPage {
             }
             shouldHotelDestinationMatches(hotel, criteria.getDestination());
         }
+    }
+
+    @Step("Open hotel details at index {index}")
+    public void openHotelDetails(int index) {
+        getHotelList().get(index - 1) // -1 because 1-based index in UI
+                .scrollIntoView("{block: 'center'}")
+                .shouldBe(visible)
+                .click();
+    }
+
+    @Step("Get hotel name at index {index}")
+    public String getHotelName(int index) {
+        return getHotelList()
+                .shouldHave(sizeGreaterThanOrEqual(index))
+                .get(index - 1)
+                .scrollIntoCenter()
+                .$("[data-selenium=hotel-name]").getText();
+    }
+
+    @Step("Get hotel reviews at index {index}")
+    public List<Pair<Review, Float>> getHotelReviews(int index) {
+        getHotelList()
+                .get(index - 1)
+                .$("[data-element-name=property-card-review]")
+                .hover();
+        List<Pair<Review, Float>> reviews = new ArrayList<>();
+        for (Review review : Review.values()) {
+            float score = parseFloat(
+                    $$(".review-bar__name")
+                            .findBy(text(i18n.t("agoda.review." + review.name())))
+                            .sibling(0)
+                            .getText());
+            reviews.add(Pair.of(review, score));
+        }
+        return reviews;
     }
 }
