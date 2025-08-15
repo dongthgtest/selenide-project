@@ -19,8 +19,37 @@ import static com.codeborne.selenide.Selenide.open;
 
 @Slf4j
 public class TestBase {
+
     @BeforeSuite(alwaysRun = true)
     public void beforeTestSuite() {
+        ChromeOptions options = new ChromeOptions();
+
+        options.addArguments("--no-first-run");
+        options.addArguments("--disable-default-apps");
+        options.addArguments("--disable-extensions");
+        options.addArguments("--window-size=1920,1080");
+        options.addArguments("--disable-dev-shm-usage");
+        options.addArguments("--no-sandbox");
+
+        // Set headless mode from system property
+        Configuration.headless = Boolean.parseBoolean(System.getProperty("selenide.headless", "false"));
+
+        // Only use a custom Chrome profile locally (skip in CI)
+        if (!isCiEnvironment()) {
+            try {
+                Path tempProfile = Files.createTempDirectory("chrome-profile-");
+                options.addArguments("--user-data-dir=" + tempProfile.toAbsolutePath());
+                System.out.println("Using Chrome user-data-dir: " + tempProfile.toAbsolutePath());
+            } catch (Exception e) {
+                throw new RuntimeException("Failed to create temp directory for Chrome profile", e);
+            }
+        } else {
+            log.info("Running in CI — skipping custom user-data-dir");
+        }
+
+        Configuration.browserCapabilities = options;
+        Configuration.browserSize = "1920x1080";
+
         SelenideLogger.addListener("AllureSelenide",
                 new AllureSelenide()
                         .screenshots(true)
@@ -33,23 +62,6 @@ public class TestBase {
 
     @BeforeClass(alwaysRun = true)
     public void setUp() {
-        // Create fresh ChromeOptions and unique user-data-dir per test class
-        ChromeOptions options = new ChromeOptions();
-        options.addArguments("--no-first-run");
-        options.addArguments("--disable-default-apps");
-        options.addArguments("--disable-extensions");
-        options.addArguments("--window-size=1920,1080");
-
-        try {
-            Path tempProfile = Files.createTempDirectory("chrome-profile-");
-            options.addArguments("--user-data-dir=" + tempProfile.toAbsolutePath().toString());
-            System.out.println("Using Chrome user-data-dir: " + tempProfile.toAbsolutePath());
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to create temp directory for Chrome profile", e);
-        }
-
-        Configuration.browserCapabilities = options;
-
         open(Configuration.baseUrl);
     }
 
@@ -57,5 +69,14 @@ public class TestBase {
     public void tearDown() {
         log.info("Test completed. Closing browser.");
         closeWebDriver();
+
+        // Small delay to ensure Chrome releases the profile lock
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException ignored) {}
+    }
+
+    private boolean isCiEnvironment() {
+        return "true".equalsIgnoreCase(System.getenv("CI"));
     }
 }
