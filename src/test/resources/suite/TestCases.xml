@@ -8,6 +8,7 @@
         <classes>
             <class name="agoda.Agoda01"/>
             <class name="agoda.Agoda02"/>
+            <class name="agoda.Agoda03"/>
         </classes>
     </test>
 <!--    <test name="Vietjet">-->

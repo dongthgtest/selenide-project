@@ -38,7 +38,7 @@ jobs:
             -DsuiteXmlFile=src/test/resources/suite/TestCases.xml \
             -Dselenide.baseUrl=https://www.agoda.com \
             -Dselenide.browser=chrome \
-            -Dselenide.headless=true \
+            -Dselenide.headless=false \
             -Dselenide.reportsFolder=allure-results \
             -Dselenide.browserSize=1920x1080 \
             -Dselenide.timeout=10000 \
