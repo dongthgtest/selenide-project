@@ -42,7 +42,7 @@ jobs:
             -Dselenide.reportsFolder=allure-results \
             -Dselenide.browserSize=1920x1080 \
             -Dselenide.timeout=10000 \
-            -Dselenide.retries=2 \
+            -Dselenide.retries=0 \
             -Dselenide.pageLoadStrategy=eager
         continue-on-error: true
 
