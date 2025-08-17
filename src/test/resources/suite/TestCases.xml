@@ -4,17 +4,17 @@
     <listeners>
         <listener class-name="com.agest.listener.AllureTestListener"/>
     </listeners>
-    <test name="Agoda">
+    <!--    <test name="Agoda">-->
+    <!--        <classes>-->
+    <!--            <class name="agoda.Agoda01"/>-->
+    <!--            <class name="agoda.Agoda02"/>-->
+    <!--            <class name="agoda.Agoda03"/>-->
+    <!--        </classes>-->
+    <!--    </test>-->
+    <test name="Vietjet">
         <classes>
-            <class name="agoda.Agoda01"/>
-            <class name="agoda.Agoda02"/>
-            <class name="agoda.Agoda03"/>
+            <class name="vietjet.Vietjet01"/>
+            <class name="vietjet.Vietjet02"/>
         </classes>
     </test>
-<!--    <test name="Vietjet">-->
-<!--        <classes>-->
-<!--            <class name="vietjet.Vietjet01"/>-->
-<!--            <class name="vietjet.Vietjet02"/>-->
-<!--        </classes>-->
-<!--    </test>-->
 </suite>

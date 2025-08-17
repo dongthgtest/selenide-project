@@ -36,7 +36,7 @@ jobs:
         run: |
           mvn clean test \
             -DsuiteXmlFile=src/test/resources/suite/TestCases.xml \
-            -Dselenide.baseUrl=https://www.agoda.com \
+            -Dselenide.baseUrl=https://www.vietjetair.com/en \
             -Dselenide.browser=chrome \
             -Dselenide.headless=true \
             -Dselenide.reportsFolder=allure-results \
@@ -44,6 +44,7 @@ jobs:
             -Dselenide.timeout=10000 \
             -Dselenide.retries=0 \
             -Dselenide.pageLoadStrategy=eager
+            -Dlanguage=en \
         continue-on-error: true
 
       - name: Upload Allure Report
